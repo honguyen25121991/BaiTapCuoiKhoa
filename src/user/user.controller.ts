@@ -49,7 +49,6 @@ export class UserController {
 
 
 
-
     // @UseGuards(AuthGuard('jwt'))
     // @Get("/:id")
     // async getInfoUser(
