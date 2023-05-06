@@ -19,27 +19,42 @@ let AuthController = class AuthController {
     constructor(authService) {
         this.authService = authService;
     }
-    login(body) {
-        return this.authService.login(body);
+    async loginUser(body) {
+        try {
+            const { email, pass_word } = body;
+            return await this.authService.loginUser(email, pass_word);
+        }
+        catch (error) {
+            throw new common_1.HttpException("Lỗi BE", 500);
+        }
     }
-    signup(body) {
-        return this.authService.signUp(body);
+    async createUser(body) {
+        try {
+            const { email, pass_word, name, phone, birth_day, gender, role } = body;
+            return await this.authService.createUser({
+                email, pass_word, name, phone, birth_day,
+                gender, role
+            });
+        }
+        catch (error) {
+            throw new common_1.HttpException("Lỗi BE", 500);
+        }
     }
 };
 __decorate([
-    (0, common_1.Post)('/login'),
+    (0, common_1.Post)("/signup"),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", void 0)
-], AuthController.prototype, "login", null);
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "loginUser", null);
 __decorate([
-    (0, common_1.Post)('sign-up'),
+    (0, common_1.Post)("/signin"),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", void 0)
-], AuthController.prototype, "signup", null);
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "createUser", null);
 AuthController = __decorate([
     (0, common_1.Controller)('auth'),
     __metadata("design:paramtypes", [auth_service_1.AuthService])

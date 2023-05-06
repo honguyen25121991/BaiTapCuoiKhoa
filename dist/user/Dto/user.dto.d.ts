@@ -10,5 +10,5 @@ export interface userTypeDto {
 }
 export interface userLogin {
     email: string;
-    mat_khau: string;
+    pass_word: string;
 }

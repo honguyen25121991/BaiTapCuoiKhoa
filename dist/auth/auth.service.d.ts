@@ -1,11 +1,19 @@
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
-import { nguoi_dung } from '@prisma/client';
-import { userLogin } from 'src/user/Dto/user.dto';
+import { PrismaClient } from '@prisma/client';
 export declare class AuthService {
     private jwtService;
     private config;
     constructor(jwtService: JwtService, config: ConfigService);
-    login(userLogin: userLogin): string;
-    signUp(user: nguoi_dung): void;
+    prisma: PrismaClient<import(".prisma/client").Prisma.PrismaClientOptions, never, import(".prisma/client").Prisma.RejectOnNotFound | import(".prisma/client").Prisma.RejectPerOperation>;
+    loginUser(email: string, pass_word: string): Promise<any>;
+    createUser(user: {
+        email: string;
+        pass_word: string;
+        name: string;
+        phone: number;
+        birth_day: string;
+        gender: string;
+        role: string;
+    }): Promise<any>;
 }

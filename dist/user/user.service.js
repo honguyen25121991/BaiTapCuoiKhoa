@@ -20,15 +20,8 @@ let UserService = class UserService {
         this.config = config;
         this.prisma = new client_1.PrismaClient();
     }
-    async getUser() {
-        return await this.prisma.nguoi_dung.findMany();
-    }
-    async createUser(user) {
-        await this.prisma.nguoi_dung.create({ data: user });
-        return `Tạo người dùng thành công`;
-    }
-    async loginUser(email, mat_khau) {
-        const user = await this.prisma.nguoi_dung.findFirst({ where: { email, mat_khau } });
+    async loginUser(email, pass_word) {
+        const user = await this.prisma.nguoi_dung.findFirst({ where: { email, pass_word } });
         if (user !== null) {
             let token = this.jwtService.sign({ data: 'nodejs 29' }, { secret: this.config.get("SECRET_KEY"), expiresIn: "60m" });
             return { "token": token, "Message": "Login thanh cong" };
@@ -37,23 +30,9 @@ let UserService = class UserService {
             return `Sai tk hoac mat khau`;
         }
     }
-    async getInfoUser(id) {
-        return await this.prisma.nguoi_dung.findFirst({ where: { nguoi_dung_id: +id } });
-    }
-    async updateInfoUser(data, id) {
-        const check = await this.prisma.nguoi_dung.update({
-            data, where: {
-                nguoi_dung_id: +id
-            }
-        });
-        if (check !== null) {
-            return {
-                check, "Message": 'Update success'
-            };
-        }
-        else {
-            return `Update Fail`;
-        }
+    async createUser(user) {
+        await this.prisma.nguoi_dung.create({ data: user });
+        return `Tạo người dùng thành công`;
     }
 };
 UserService = __decorate([
