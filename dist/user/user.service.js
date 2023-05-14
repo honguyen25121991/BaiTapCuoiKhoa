@@ -20,20 +20,6 @@ let UserService = class UserService {
         this.config = config;
         this.prisma = new client_1.PrismaClient();
     }
-    async loginUser(email, pass_word) {
-        const user = await this.prisma.nguoi_dung.findFirst({ where: { email, pass_word } });
-        if (user !== null) {
-            let token = this.jwtService.sign({ data: 'nodejs 29' }, { secret: this.config.get("SECRET_KEY"), expiresIn: "60m" });
-            return { "token": token, "Message": "Login thanh cong" };
-        }
-        else {
-            return `Sai tk hoac mat khau`;
-        }
-    }
-    async createUser(user) {
-        await this.prisma.nguoi_dung.create({ data: user });
-        return `Tạo người dùng thành công`;
-    }
 };
 UserService = __decorate([
     (0, common_1.Injectable)(),

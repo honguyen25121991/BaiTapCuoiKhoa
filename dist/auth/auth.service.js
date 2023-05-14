@@ -24,7 +24,7 @@ let AuthService = class AuthService {
         const date = new Date();
         const user = await this.prisma.nguoi_dung.findFirst({ where: { email, pass_word } });
         if (user !== null) {
-            let token = this.jwtService.sign({ data: 'nodejs 29' }, { secret: this.config.get("SECRET_KEY"), expiresIn: "60m" });
+            let token = this.jwtService.sign({ data: 'nodejs 29' }, { secret: this.config.get("SECRET_KEY"), expiresIn: "1d" });
             return {
                 "statusCode": 200,
                 "content:": {

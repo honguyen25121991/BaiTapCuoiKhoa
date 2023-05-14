@@ -12,30 +12,30 @@ export class UserService {
 
     prisma = new PrismaClient()
 
-    async loginUser(
-        email: string,
-        pass_word: string
-    ): Promise<any> {
-        const user: userLogin = await this.prisma.nguoi_dung.findFirst({ where: { email, pass_word } });
-        if (user !== null) {
-            let token = this.jwtService.sign({ data: 'nodejs 29' },
-                { secret: this.config.get("SECRET_KEY"), expiresIn: "60m" }
-            )
-            return { "token": token, "Message": "Login thanh cong" }
+    // async loginUser(
+    //     email: string,
+    //     pass_word: string
+    // ): Promise<any> {
+    //     const user: userLogin = await this.prisma.nguoi_dung.findFirst({ where: { email, pass_word } });
+    //     if (user !== null) {
+    //         let token = this.jwtService.sign({ data: 'nodejs 29' },
+    //             { secret: this.config.get("SECRET_KEY"), expiresIn: "60m" }
+    //         )
+    //         return { "token": token, "Message": "Login thanh cong" }
 
-        } else {
-            return `Sai tk hoac mat khau`
-        }
-    }
+    //     } else {
+    //         return `Sai tk hoac mat khau`
+    //     }
+    // }
 
-    async createUser(user: {
-        email: string, pass_word: string, name: string, phone: number,
-        birth_day: string, gender: string, role: string
+    // async createUser(user: {
+    //     email: string, pass_word: string, name: string, phone: number,
+    //     birth_day: string, gender: string, role: string
 
-    }): Promise<any> {
-        await this.prisma.nguoi_dung.create({ data: user })
-        return `Tạo người dùng thành công`
-    }
+    // }): Promise<any> {
+    //     await this.prisma.nguoi_dung.create({ data: user })
+    //     return `Tạo người dùng thành công`
+    // }
 
 
 

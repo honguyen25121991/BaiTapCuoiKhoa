@@ -8,18 +8,15 @@ datasource db {
 }
 
 model binh_luan {
-  id_binh_luan       Int        @id @default(autoincrement())
+  id_binh_luan       Int    @id @default(autoincrement())
   ma_cong_viec       Int
   ma_nguoi_binh_luan Int
-  ngay_binh_luan     DateTime   @db.DateTime(0)
-  noi_dung           String     @db.VarChar(255)
+  ngay_binh_luan     String @db.VarChar(255)
+  noi_dung           String @db.VarChar(255)
   sao_binh_luan      Int
-  id_nguoi_dung      Int
   id_phong           Int
-  nguoi_dung         nguoi_dung @relation(fields: [id_nguoi_dung], references: [id_nguoi_dung], onDelete: NoAction, onUpdate: NoAction, map: "binh_luan_ibfk_1")
-  phong              phong      @relation(fields: [id_phong], references: [id_phong], onDelete: NoAction, onUpdate: NoAction, map: "binh_luan_ibfk_2")
+  phong              phong  @relation(fields: [id_phong], references: [id_phong], onDelete: NoAction, onUpdate: NoAction, map: "binh_luan_ibfk_1")
 
-  @@index([id_nguoi_dung], map: "id_nguoi_dung")
   @@index([id_phong], map: "id_phong")
 }
 
@@ -32,7 +29,6 @@ model nguoi_dung {
   birth_day     String      @db.VarChar(255)
   gender        String      @db.VarChar(255)
   role          String      @db.VarChar(255)
-  binh_luan     binh_luan[]
   dat_phong     dat_phong[]
 }
 
@@ -52,37 +48,37 @@ model dat_phong {
 }
 
 model phong {
-  id_phong  Int         @id @default(autoincrement())
-  ten_phong String      @db.VarChar(255)
-  khach     Int
-  phong_ngu Int
-  giuong    Int
-  phong_tam Int
-  mo_ta     String      @db.VarChar(255)
-  gia_tien  Int
-  bep       Boolean     @default(false)
-  may_giat  Boolean     @default(false)
-  ban_la    Boolean     @default(false)
-  tivi      Boolean     @default(false)
-  dieu_hoa  Boolean     @default(false)
-  wifi      Boolean     @default(false)
-  do_xe     Boolean     @default(false)
-  ho_boi    Boolean     @default(false)
-  ban_ui    Boolean     @default(false)
-  hinh_anh  String      @db.VarChar(255)
-  binh_luan binh_luan[]
-  dat_phong dat_phong[]
-  vi_tri    vi_tri[]
+  id_phong                       Int         @id @default(autoincrement())
+  ten_phong                      String      @db.VarChar(255)
+  khach                          Int
+  phong_ngu                      Int
+  giuong                         Int
+  phong_tam                      Int
+  mo_ta                          String      @db.VarChar(255)
+  gia_tien                       Int
+  bep                            Boolean     @default(false)
+  may_giat                       Boolean     @default(false)
+  ban_la                         Boolean     @default(false)
+  tivi                           Boolean     @default(false)
+  dieu_hoa                       Boolean     @default(false)
+  wifi                           Boolean     @default(false)
+  do_xe                          Boolean     @default(false)
+  ho_boi                         Boolean     @default(false)
+  ban_ui                         Boolean     @default(false)
+  hinh_anh                       String      @db.VarChar(255)
+  id_vi_tri                      Int
+  binh_luan                      binh_luan[]
+  dat_phong                      dat_phong[]
+  vi_tri_phong_id_vi_triTovi_tri vi_tri      @relation("phong_id_vi_triTovi_tri", fields: [id_vi_tri], references: [id_vi_tri], onDelete: NoAction, onUpdate: NoAction, map: "phong_ibfk_1")
+
+  @@index([id_vi_tri], map: "id_vi_tri")
 }
 
 model vi_tri {
-  id_vi_tri  Int    @id @default(autoincrement())
-  ten_vi_tri String @db.VarChar(255)
-  tinh_thanh String @db.VarChar(255)
-  quoc_gia   String @db.VarChar(255)
-  hinh_anh   String @db.VarChar(255)
-  id_phong   Int
-  phong      phong  @relation(fields: [id_phong], references: [id_phong], onDelete: NoAction, onUpdate: NoAction, map: "vi_tri_ibfk_1")
-
-  @@index([id_phong], map: "id_phong")
+  id_vi_tri                     Int     @id @default(autoincrement())
+  ten_vi_tri                    String  @db.VarChar(255)
+  tinh_thanh                    String  @db.VarChar(255)
+  quoc_gia                      String  @db.VarChar(255)
+  hinh_anh                      String  @db.VarChar(255)
+  phong_phong_id_vi_triTovi_tri phong[] @relation("phong_id_vi_triTovi_tri")
 }

@@ -14,6 +14,7 @@ const common_1 = require("@nestjs/common");
 const user_service_1 = require("./user.service");
 const config_1 = require("@nestjs/config");
 const client_1 = require("@prisma/client");
+const swagger_1 = require("@nestjs/swagger");
 let UserController = class UserController {
     constructor(userService, config) {
         this.userService = userService;
@@ -40,6 +41,7 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], UserController.prototype, "removeUser", null);
 UserController = __decorate([
+    (0, swagger_1.ApiTags)("user"),
     (0, common_1.Controller)('user'),
     __metadata("design:paramtypes", [user_service_1.UserService,
         config_1.ConfigService])
