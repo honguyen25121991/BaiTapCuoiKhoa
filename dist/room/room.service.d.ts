@@ -21,6 +21,21 @@ export declare class RoomService {
         "hinh_anh": string;
         "id_vi_tri": number;
     }): Promise<any>;
+    updateImage(id: string, ten_hinh: string, mo_ta: string, hinh_id: string, duong_dan: string): Promise<{
+        statusCode: number;
+        message: string;
+        dateTime: Date;
+        content?: undefined;
+    } | {
+        statusCode: number;
+        message: string;
+        content: {
+            ten_hinh: string;
+            duong_dan: string;
+            mo_ta: string;
+        };
+        dateTime: Date;
+    }>;
     getAllRoom(): Promise<any>;
     getRoomById(id: number): Promise<any>;
     getRoomByLocation(id: number): Promise<any>;

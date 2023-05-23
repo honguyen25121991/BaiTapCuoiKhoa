@@ -1,3 +1,4 @@
+/// <reference types="multer" />
 import { RoomService } from './room.service';
 import { phong } from '@prisma/client';
 export declare class RoomController {
@@ -23,6 +24,25 @@ export declare class RoomController {
         "hinh_anh": string;
         "id_vi_tri": number;
     }): Promise<any>;
+    updateImage(id: string, _file: Express.Multer.File, body: {
+        ten_hinh: string;
+        mo_ta: string;
+        hinh_id: string;
+    }): Promise<{
+        statusCode: number;
+        message: string;
+        dateTime: Date;
+        content?: undefined;
+    } | {
+        statusCode: number;
+        message: string;
+        content: {
+            ten_hinh: string;
+            duong_dan: string;
+            mo_ta: string;
+        };
+        dateTime: Date;
+    }>;
     getAllRoom(): Promise<phong[]>;
     getRoomById(id: string): Promise<phong[]>;
     getRoomByLocation(id: string): Promise<phong[]>;

@@ -47,6 +47,54 @@ let RoomService = class RoomService {
             };
         }
     }
+    async updateImage(id, ten_hinh, mo_ta, hinh_id, duong_dan) {
+        const date = new Date();
+        const checkIdImage = await this.prisma.phong.findFirst({
+            where: {
+                id_phong: +hinh_id
+            }
+        });
+        const checkIdUser = await this.prisma.phong.findFirst({
+            where: {
+                id_phong: +id
+            }
+        });
+        if (checkIdUser !== null) {
+            if (checkIdImage === null) {
+                return {
+                    "statusCode": 404,
+                    "message": " Id ảnh không tồn tại",
+                    "dateTime": date
+                };
+            }
+            else {
+                await this.prisma.phong.update({
+                    data: {
+                        id_phong: +id,
+                        ten_phong: ten_hinh,
+                        mo_ta: mo_ta,
+                    }, where: {
+                        id_phong: +hinh_id
+                    }
+                });
+                return {
+                    "statusCode": 200,
+                    "message": "Update ảnh thành công ",
+                    "content": {
+                        ten_hinh, duong_dan, mo_ta,
+                    },
+                    "dateTime": date
+                };
+            }
+        }
+        else {
+            return {
+                "statusCode": 404,
+                "message": " Id người dùng không tồn tại",
+                "dateTime": date
+            };
+        }
+    }
     async getAllRoom() {
         const date = new Date();
         const resuft = await this.prisma.phong.findMany();
@@ -85,7 +133,7 @@ let RoomService = class RoomService {
     }
     async getRoomByLocation(id) {
         const date = new Date();
-        const resuft = await this.prisma.phong.findFirst({ where: { id_vi_tri: id } });
+        const resuft = await this.prisma.phong.findMany({ where: { id_vi_tri: +id } });
         if (resuft !== null) {
             return {
                 "statusCode": 200,
