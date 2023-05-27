@@ -52,6 +52,7 @@ export class CommentService {
       }
     }
   }
+
   async getCommentWithRoomId(id: number): Promise<any> {
     const date = new Date();
     const resuft = await this.prisma.binh_luan.findMany({

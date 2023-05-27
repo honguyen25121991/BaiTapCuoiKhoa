@@ -23,7 +23,7 @@ export declare class RoomController {
         "ban_ui": boolean;
         "hinh_anh": string;
         "id_vi_tri": number;
-    }): Promise<any>;
+    }, auth: string): Promise<any>;
     updateImage(id: string, _file: Express.Multer.File, body: {
         ten_hinh: string;
         mo_ta: string;
@@ -43,10 +43,10 @@ export declare class RoomController {
         };
         dateTime: Date;
     }>;
-    getAllRoom(): Promise<phong[]>;
-    getRoomById(id: string): Promise<phong[]>;
-    getRoomByLocation(id: string): Promise<phong[]>;
-    updateRoomInfo(id: string, body: {
+    getAllRoom(auth: string): Promise<phong[]>;
+    getRoomById(id: string, auth: string): Promise<phong[]>;
+    getRoomByLocation(id: string, auth: string): Promise<phong[]>;
+    updateRoomInfo(id: string, auth: string, body: {
         "ten_phong": string;
         "khach": number;
         "phong_ngu": number;
@@ -66,7 +66,7 @@ export declare class RoomController {
         "hinh_anh": string;
         "id_vi_tri": number;
     }): Promise<any>;
-    removeRoom(id: string): Promise<{
+    removeRoom(id: string, auth: string): Promise<{
         statusCode: number;
         content: string;
         dateTime: Date;

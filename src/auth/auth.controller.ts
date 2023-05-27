@@ -1,9 +1,9 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, HttpException, HttpCode } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { nguoi_dung } from '@prisma/client'
-import { userLogin } from 'src/user/Dto/user.dto';
+import { userLogin } from './dto/create-auth.dto';
 import { ApiBearerAuth, ApiBody, ApiProperty, ApiTags } from '@nestjs/swagger';
-class User {
+class Auth {
   @ApiProperty({
     description: "email", type: String
   })
@@ -14,11 +14,8 @@ class User {
   })
   pass_word: string
 }
-class UserLogin {
-  @ApiProperty({
-    description: "name", type: String
-  })
-  name: string;
+class AuthLogin {
+
   @ApiProperty({
     description: "email", type: String
   })
@@ -28,13 +25,17 @@ class UserLogin {
   })
   pass_word: string;
   @ApiProperty({
+    description: "name", type: String
+  })
+  name: string;
+  @ApiProperty({
     description: "phone", type: Number
   })
   phone: number;
   @ApiProperty({
-    description: "birthday", type: String
+    description: "birth_day", type: String
   })
-  birthday: string;
+  birth_day: string;
   @ApiProperty({
     description: "gender", type: String
   })
@@ -50,7 +51,7 @@ export class AuthController {
   constructor(private readonly authService: AuthService) { }
 
   @ApiBody({
-    type: User
+    type: Auth
   })
   @Post("/signup")
   loginUser(
@@ -67,7 +68,7 @@ export class AuthController {
   }
 
   @ApiBody({
-    type: UserLogin
+    type: AuthLogin
   })
   @Post("/signin")
   async createUser(

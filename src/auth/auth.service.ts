@@ -5,7 +5,7 @@ import { JwtService } from '@nestjs/jwt';
 import { PrismaClient, nguoi_dung } from '@prisma/client';
 import e from 'express';
 import { use } from 'passport';
-import { userLogin } from 'src/user/Dto/user.dto';
+import { userLogin } from './dto/create-auth.dto';
 @Injectable()
 export class AuthService {
   constructor(

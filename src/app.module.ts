@@ -6,6 +6,8 @@ import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { CommentModule } from './comment/comment.module';
 import { RoomModule } from './room/room.module';
+import { LocationModule } from './location/location.module';
+import { BookingModule } from './booking/booking.module';
 
 
 @Module({
@@ -13,6 +15,8 @@ import { RoomModule } from './room/room.module';
     AuthModule,
     CommentModule,
     RoomModule,
+    LocationModule,
+    BookingModule,
   ],
   controllers: [AppController],
   providers: [AppService],

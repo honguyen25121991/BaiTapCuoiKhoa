@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, ForbiddenException, Get, HttpCode, HttpException, HttpStatus, InternalServerErrorException, Param, Post, Put, Query, Req, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Delete, ForbiddenException, Get, Headers, HttpCode, HttpException, HttpStatus, InternalServerErrorException, Param, Post, Put, Query, Req, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UserDto, userLogin, } from './Dto/user.dto';
 import { ConfigService } from '@nestjs/config';
@@ -6,11 +6,41 @@ import { PrismaClient, nguoi_dung } from '@prisma/client';
 import { AuthGuard } from '@nestjs/passport';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
-import { ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiProperty, ApiTags } from '@nestjs/swagger';
 import { Request } from 'express';
 
-@ApiTags("user")
+class User {
 
+    @ApiProperty({
+        description: "email", type: String
+    })
+    email: string;
+    @ApiProperty({
+        description: "pass_word", type: String
+    })
+    pass_word: string;
+    @ApiProperty({
+        description: "name", type: String
+    })
+    name: string;
+    @ApiProperty({
+        description: "phone", type: Number
+    })
+    phone: number;
+    @ApiProperty({
+        description: "birth_day", type: String
+    })
+    birth_day: string;
+    @ApiProperty({
+        description: "gender", type: String
+    })
+    gender: string;
+    @ApiProperty({
+        description: "role", type: String
+    })
+    role: string;
+}
+@ApiTags("User")
 @Controller('user')
 export class UserController {
     prisma = new PrismaClient()
@@ -20,8 +50,123 @@ export class UserController {
     ) { }
 
 
+    @ApiBody({
+        type: User
+    })
+    @ApiBearerAuth()
+    @UseGuards(AuthGuard("jwt"))
+    @Post("/create")
+    async createUser(
+        @Body() body: {
+            email: string, pass_word: string, name: string, phone: number,
+            birth_day: string, gender: string, role: string
+        },
+        @Headers('authorization') auth: string
 
-    // @ApiConsumes('mutilpart/from-data')
+    ): Promise<
+        nguoi_dung[]
+    > {
+        try {
+            const { email, pass_word, name, phone, birth_day,
+                gender, role } = body
+            return await this.userService.createUser({
+                email, pass_word, name, phone, birth_day,
+                gender, role
+            })
+        } catch (error) {
+            throw new HttpException("Lỗi BE", 500)
+        }
+    }
+
+    @ApiBearerAuth()
+    @UseGuards(AuthGuard("jwt"))
+    @Get()
+    async getAllUser(
+        @Headers('authorization') auth: string
+
+    ): Promise<any> {
+        try {
+            return await this.userService.getAllUser()
+        } catch (error) {
+            throw new HttpException("Lỗi BE", 500)
+        }
+    }
+
+    @ApiBearerAuth()
+    @UseGuards(AuthGuard("jwt"))
+    @Get("/get-user-with-id/:id")
+    async getUserWithId(
+        @Param("id") id: string,
+        @Headers('authorization') auth: string
+
+    ): Promise<any> {
+        try {
+            return await this.userService.getUserWithId(id)
+        } catch (error) {
+            throw new HttpException("Lỗi BE", 500)
+        }
+    }
+
+    @ApiBearerAuth()
+    @UseGuards(AuthGuard("jwt"))
+    @Get("/get-user-with-name/:name")
+    async getUserWithName(
+        @Param("name") name: string,
+        @Headers('authorization') auth: string
+
+    ): Promise<any> {
+        try {
+            return await this.userService.getUserWithName(name)
+        } catch (error) {
+            throw new HttpException("Lỗi BE", 500)
+        }
+    }
+
+    @ApiBody({
+        type: User
+    })
+    @ApiBearerAuth()
+    @UseGuards(AuthGuard("jwt"))
+    @Put('/update-user/:id')
+    async updateUser(
+        @Param("id") id: number,
+        @Headers('authorization')
+        @Body() body: {
+            email: string, pass_word: string, name: string, phone: number,
+            birth_day: string, gender: string, role: string
+        },
+    ): Promise<any> {
+        const {
+            email, pass_word, name, phone, birth_day,
+            gender, role
+        } = body
+        try {
+            return await this.userService.updateUser({
+                email, pass_word, name, phone, birth_day,
+                gender, role
+            }, id)
+        } catch (error) {
+            throw new HttpException("Lỗi BE", 500)
+        }
+    }
+
+    @ApiBearerAuth()
+    @UseGuards(AuthGuard("jwt"))
+    @Delete("/delete-user/:id")
+    async deleteUser(
+        @Param("id") id: string,
+        @Headers('authorization') auth: string
+    ): Promise<any> {
+        try {
+            return await this.userService.deleteUser(id)
+        } catch (error) {
+            throw new HttpException("Lỗi BE", 500)
+        }
+    }
+}
+
+
+ // @ApiConsumes('mutilpart/from-data')
     // @ApiBody({
     //     description: 'fileload',
     //     // type: any
@@ -89,12 +234,3 @@ export class UserController {
     //         throw new HttpException("Lỗi BE", 500)
     //     }
     // }
-    @Put()
-    putUser() {
-        return "put User"
-    }
-    @Delete()
-    removeUser() {
-        return "remove User"
-    }
-}

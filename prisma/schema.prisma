@@ -35,8 +35,8 @@ model nguoi_dung {
 model dat_phong {
   id_dat_phong   Int        @id @default(autoincrement())
   ma_phong       Int
-  ngay_den       DateTime   @db.DateTime(0)
-  ngay_di        DateTime   @db.DateTime(0)
+  ngay_den       String     @db.VarChar(255)
+  ngay_di        String     @db.VarChar(255)
   so_luong_khach Int
   id_nguoi_dung  Int
   id_phong       Int

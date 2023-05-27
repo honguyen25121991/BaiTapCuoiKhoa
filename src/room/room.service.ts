@@ -56,6 +56,7 @@ export class RoomService {
     }
 
   }
+
   async updateImage(id: string, ten_hinh: string, mo_ta: string, hinh_id: string, duong_dan: string) {
     const date = new Date();
     const checkIdImage = await this.prisma.phong.findFirst({
