@@ -20,13 +20,15 @@ class Auth {
 }
 __decorate([
     (0, swagger_1.ApiProperty)({
-        description: "email", type: String
+        description: 'email',
+        type: String,
     }),
     __metadata("design:type", String)
 ], Auth.prototype, "email", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
-        description: "pass_word", type: String
+        description: 'pass_word',
+        type: String,
     }),
     __metadata("design:type", String)
 ], Auth.prototype, "pass_word", void 0);
@@ -34,46 +36,60 @@ class AuthLogin {
 }
 __decorate([
     (0, swagger_1.ApiProperty)({
-        description: "email", type: String
+        description: 'email',
+        type: String,
     }),
     __metadata("design:type", String)
 ], AuthLogin.prototype, "email", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
-        description: "pass_word", type: String
+        description: 'pass_word',
+        type: String,
     }),
     __metadata("design:type", String)
 ], AuthLogin.prototype, "pass_word", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
-        description: "name", type: String
+        description: 'name',
+        type: String,
     }),
     __metadata("design:type", String)
 ], AuthLogin.prototype, "name", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
-        description: "phone", type: Number
+        description: 'phone',
+        type: Number,
     }),
     __metadata("design:type", Number)
 ], AuthLogin.prototype, "phone", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
-        description: "birth_day", type: String
+        description: 'birth_day',
+        type: String,
     }),
     __metadata("design:type", String)
 ], AuthLogin.prototype, "birth_day", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
-        description: "gender", type: String
+        description: 'gender',
+        type: String,
     }),
     __metadata("design:type", String)
 ], AuthLogin.prototype, "gender", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
-        description: "role", type: String
+        description: 'role',
+        type: String,
     }),
     __metadata("design:type", String)
 ], AuthLogin.prototype, "role", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({
+        description: 'hinh_anh',
+        type: String,
+    }),
+    __metadata("design:type", String)
+], AuthLogin.prototype, "hinh_anh", void 0);
 let AuthController = class AuthController {
     constructor(authService) {
         this.authService = authService;
@@ -84,27 +100,33 @@ let AuthController = class AuthController {
             return this.authService.loginUser(email, pass_word);
         }
         catch (error) {
-            throw new common_1.HttpException("Lỗi BE", 500);
+            throw new common_1.HttpException('Lỗi BE', 500);
         }
     }
     async createUser(body) {
         try {
-            const { email, pass_word, name, phone, birth_day, gender, role } = body;
+            const { email, pass_word, name, phone, birth_day, gender, role, hinh_anh, } = body;
             return await this.authService.createUser({
-                email, pass_word, name, phone, birth_day,
-                gender, role
+                email,
+                pass_word,
+                name,
+                phone,
+                birth_day,
+                gender,
+                role,
+                hinh_anh,
             });
         }
         catch (error) {
-            throw new common_1.HttpException("Lỗi BE", 500);
+            throw new common_1.HttpException('Lỗi BE', 500);
         }
     }
 };
 __decorate([
     (0, swagger_1.ApiBody)({
-        type: Auth
+        type: Auth,
     }),
-    (0, common_1.Post)("/signup"),
+    (0, common_1.Post)('/signup'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
@@ -112,16 +134,16 @@ __decorate([
 ], AuthController.prototype, "loginUser", null);
 __decorate([
     (0, swagger_1.ApiBody)({
-        type: AuthLogin
+        type: AuthLogin,
     }),
-    (0, common_1.Post)("/signin"),
+    (0, common_1.Post)('/signing'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "createUser", null);
 AuthController = __decorate([
-    (0, swagger_1.ApiTags)("Auth"),
+    (0, swagger_1.ApiTags)('Auth'),
     (0, common_1.Controller)('auth'),
     __metadata("design:paramtypes", [auth_service_1.AuthService])
 ], AuthController);

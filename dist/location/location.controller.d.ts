@@ -4,26 +4,21 @@ export declare class LocationController {
     private readonly locationService;
     constructor(locationService: LocationService);
     createLocation(auth: string, body: {
-        "ten_vi_tri": string;
-        "tinh_thanh": string;
-        "quoc_gia": string;
-        "hinh_anh": string;
+        ten_vi_tri: string;
+        tinh_thanh: string;
+        quoc_gia: string;
+        hinh_anh: string;
     }): Promise<any>;
     getAllLocation(auth: string): Promise<any>;
     getLocationwithId(auth: string, id: string): Promise<any>;
     updateLocation(auth: string, id: number, body: {
-        "ten_vi_tri": string;
-        "tinh_thanh": string;
-        "quoc_gia": string;
-        "hinh_anh": string;
+        ten_vi_tri: string;
+        tinh_thanh: string;
+        quoc_gia: string;
+        hinh_anh: string;
     }): Promise<any>;
     deleteLocation(auth: string, id: string): Promise<any>;
-    postImage(id: string, _file: Express.Multer.File, body: {
-        "ten_vi_tri": string;
-        "tinh_thanh": string;
-        "quoc_gia": string;
-        "hinh_anh": string;
-    }): Promise<{
+    postImage(id: string, file: Express.Multer.File, auth: string): Promise<{
         statusCode: number;
         message: string;
         content: {
@@ -36,4 +31,5 @@ export declare class LocationController {
         dateTime: Date;
         content?: undefined;
     }>;
+    getUserSearchPage(auth: string, pageIndex: number, pageSize: number, keyword: string): Promise<any>;
 }

@@ -22,57 +22,62 @@ let AuthService = class AuthService {
     }
     async loginUser(email, pass_word) {
         const date = new Date();
-        const user = await this.prisma.nguoi_dung.findFirst({ where: { email, pass_word } });
+        const user = await this.prisma.nguoi_dung.findFirst({
+            where: { email, pass_word },
+        });
         if (user !== null) {
-            let token = this.jwtService.sign({ data: 'nodejs 29' }, { secret: this.config.get("SECRET_KEY"), expiresIn: "1d" });
+            const token = this.jwtService.sign({ data: 'nodejs 29' }, { secret: this.config.get('SECRET_KEY'), expiresIn: '1d' });
             return {
-                "statusCode": 200,
-                "content:": {
-                    user
+                statusCode: 200,
+                'content:': {
+                    user,
                 },
-                "token": token,
-                "dateTime": date
+                token: token,
+                dateTime: date,
             };
         }
         else {
             return {
-                "statusCode": 400,
-                "message": "Yêu cầu không hợp lệ!",
-                "content": "Email hoặc mật khẩu không đúng !",
-                "dateTime": date
+                statusCode: 400,
+                message: 'Yêu cầu không hợp lệ!',
+                content: 'Email hoặc mật khẩu không đúng !',
+                dateTime: date,
             };
         }
     }
     async createUser(user) {
-        let { email, name, phone, birth_day, gender, role } = user;
+        const { email, name, phone, birth_day, gender, role, hinh_anh } = user;
         const date = new Date();
         const resuft = await this.prisma.nguoi_dung.findFirst({ where: { email } });
         if (resuft === null) {
             await this.prisma.nguoi_dung.create({ data: user });
             return {
-                "statusCode": 200,
-                "message": "Tạo người dùng thành công",
-                "content": {
-                    email, name, phone, birth_day,
-                    gender, role
+                statusCode: 200,
+                message: 'Tạo người dùng thành công',
+                content: {
+                    email,
+                    name,
+                    phone,
+                    birth_day,
+                    gender,
+                    role,
                 },
-                "dateTime": date
+                dateTime: date,
             };
         }
         else {
             return {
-                "statusCode": 400,
-                "message": "Yêu cầu không hợp lệ!",
-                "content": "Email đã tồn tại !",
-                "dateTime": date
+                statusCode: 400,
+                message: 'Yêu cầu không hợp lệ!',
+                content: 'Email đã tồn tại !',
+                dateTime: date,
             };
         }
     }
 };
 AuthService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [jwt_1.JwtService,
-        config_1.ConfigService])
+    __metadata("design:paramtypes", [jwt_1.JwtService, config_1.ConfigService])
 ], AuthService);
 exports.AuthService = AuthService;
 //# sourceMappingURL=auth.service.js.map

@@ -6,19 +6,18 @@ import { JwtService } from '@nestjs/jwt';
 @Injectable()
 export class UserService {
     constructor(
-        private jwtService: JwtService,
-        private config: ConfigService,
+
     ) { }
 
     prisma = new PrismaClient()
 
     async createUser(user: {
         email: string, pass_word: string, name: string, phone: number,
-        birth_day: string, gender: string, role: string
+        birth_day: string, gender: string, role: string, hinh_anh: string
     }): Promise<any> {
         let {
             email, name, phone, birth_day,
-            gender, role
+            gender, role, hinh_anh
         } = user
         const date = new Date();
 
@@ -45,7 +44,21 @@ export class UserService {
     }
     async getAllUser(): Promise<any> {
         const date = new Date();
-        const resuft = await this.prisma.nguoi_dung.findMany()
+        const resuft = await this.prisma.nguoi_dung.findMany({
+
+            select: {
+                id_nguoi_dung: true,
+                name: true,
+                email: true,
+                phone: true,
+                birth_day: true,
+                hinh_anh: true,
+                gender: true,
+                role: true,
+            },
+        }
+
+        )
         if (resuft.length > 0) {
             return {
                 "statusCode": 200,
@@ -64,7 +77,17 @@ export class UserService {
         const resuft = await this.prisma.nguoi_dung.findMany({
             where: {
                 id_nguoi_dung: + id
-            }
+            },
+            select: {
+                id_nguoi_dung: true,
+                name: true,
+                email: true,
+                phone: true,
+                birth_day: true,
+                hinh_anh: true,
+                gender: true,
+                role: true,
+            },
         })
         if (resuft.length > 0) {
             return {
@@ -86,7 +109,17 @@ export class UserService {
         const resuft = await this.prisma.nguoi_dung.findMany({
             where: {
                 name: name
-            }
+            },
+            select: {
+                id_nguoi_dung: true,
+                name: true,
+                email: true,
+                phone: true,
+                birth_day: true,
+                hinh_anh: true,
+                gender: true,
+                role: true,
+            },
         })
         if (resuft.length > 0) {
             return {
@@ -166,6 +199,76 @@ export class UserService {
             }
         }
     }
+
+    async postImage(id: string, duong_dan: string,
+    ) {
+        const date = new Date();
+        const checkIdUser = await this.prisma.nguoi_dung.findFirst({
+            where: {
+                id_nguoi_dung: +id
+            }
+        })
+        if (checkIdUser !== null) {
+            await this.prisma.nguoi_dung.update({
+                data: {
+                    hinh_anh: duong_dan,
+
+                }, where: {
+                    id_nguoi_dung: +id,
+
+                }
+            })
+            return {
+                "statusCode": 200,
+                "message": "Tải ảnh người dùng thành công ",
+                "content": {
+                    hinh_anh: duong_dan,
+                },
+                "dateTime": date
+            }
+        } else {
+            return {
+                "statusCode": 404,
+                "message": " Id người dùng không tồn tại",
+                "dateTime": date
+            }
+        }
+    }
+
+    async getUserSearchPage(pageIndex: number, pageSize: number, keyword: string): Promise<any> {
+        const date = new Date();
+        const result = await this.prisma.nguoi_dung.findMany({
+            skip: (pageIndex - 1) * pageSize,
+            take: +pageSize,
+            where: {
+                name: {
+                    contains: keyword
+                }
+            }
+        });
+        const totalRow = await this.prisma.nguoi_dung.count({
+            where: {
+                name: {
+                    contains: keyword
+                }
+            }
+        });
+        if (result.length > 0) {
+            return {
+                "statusCode": 200,
+                'content': result,
+                'totalRow': totalRow,
+                "dateTime": date
+            };
+        } else {
+            return {
+                "statusCode": 404,
+                'content': 'Không tìm thấy kết quả',
+                "dateTime": date
+            };
+        }
+    }
+
 }
 
 

@@ -29,6 +29,7 @@ model nguoi_dung {
   birth_day     String      @db.VarChar(255)
   gender        String      @db.VarChar(255)
   role          String      @db.VarChar(255)
+  hinh_anh      String      @db.VarChar(255)
   dat_phong     dat_phong[]
 }
 

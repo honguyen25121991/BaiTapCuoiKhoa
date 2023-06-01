@@ -15,5 +15,6 @@ export declare class AuthService {
         birth_day: string;
         gender: string;
         role: string;
+        hinh_anh: string;
     }): Promise<any>;
 }

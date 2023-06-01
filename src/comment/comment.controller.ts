@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpException, UseGuards, Req, Headers, Put } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, HttpException, UseGuards, Req, Headers, Put, Query } from '@nestjs/common';
 import { CommentService } from './comment.service';
 import { ApiBearerAuth, ApiBody, ApiProperty, ApiTags } from '@nestjs/swagger';
 import { binh_luan } from '@prisma/client';
@@ -157,4 +157,5 @@ export class CommentController {
       throw new HttpException("Lỗi BE", 500)
     }
   }
+
 }

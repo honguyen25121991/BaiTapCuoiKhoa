@@ -23,25 +23,29 @@ class Location {
 }
 __decorate([
     (0, swagger_1.ApiProperty)({
-        description: "ten_vi_tri", type: String
+        description: 'ten_vi_tri',
+        type: String,
     }),
     __metadata("design:type", String)
 ], Location.prototype, "ten_vi_tri", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
-        description: "tinh_thanh", type: String
+        description: 'tinh_thanh',
+        type: String,
     }),
     __metadata("design:type", String)
 ], Location.prototype, "tinh_thanh", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
-        description: "quoc_gia", type: String
+        description: 'quoc_gia',
+        type: String,
     }),
     __metadata("design:type", String)
 ], Location.prototype, "quoc_gia", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
-        description: "hinh_anh", type: String
+        description: 'hinh_anh',
+        type: String,
     }),
     __metadata("design:type", String)
 ], Location.prototype, "hinh_anh", void 0);
@@ -54,7 +58,7 @@ let LocationController = class LocationController {
             return this.locationService.createLocation(body);
         }
         catch (error) {
-            throw new common_1.HttpException("Lỗi BE", 500);
+            throw new common_1.HttpException('Lỗi BE', 500);
         }
     }
     async getAllLocation(auth) {
@@ -62,7 +66,7 @@ let LocationController = class LocationController {
             return await this.locationService.getAllLocation();
         }
         catch (error) {
-            throw new common_1.HttpException("Lỗi BE", 500);
+            throw new common_1.HttpException('Lỗi BE', 500);
         }
     }
     async getLocationwithId(auth, id) {
@@ -70,11 +74,11 @@ let LocationController = class LocationController {
             return await this.locationService.getLocationwithId(id);
         }
         catch (error) {
-            throw new common_1.HttpException("Lỗi BE", 500);
+            throw new common_1.HttpException('Lỗi BE', 500);
         }
     }
     async updateLocation(auth, id, body) {
-        const { ten_vi_tri, tinh_thanh, quoc_gia, hinh_anh, } = body;
+        const { ten_vi_tri, tinh_thanh, quoc_gia, hinh_anh } = body;
         try {
             return await this.locationService.updateLocation({
                 ten_vi_tri,
@@ -84,7 +88,7 @@ let LocationController = class LocationController {
             }, id);
         }
         catch (error) {
-            throw new common_1.HttpException("Lỗi BE", 500);
+            throw new common_1.HttpException('Lỗi BE', 500);
         }
     }
     async deleteLocation(auth, id) {
@@ -92,26 +96,33 @@ let LocationController = class LocationController {
             return await this.locationService.deleteLocation(id);
         }
         catch (error) {
-            throw new common_1.HttpException("Lỗi BE", 500);
+            throw new common_1.HttpException('Lỗi BE', 500);
         }
     }
-    postImage(id, _file, body) {
-        const { ten_vi_tri, tinh_thanh, quoc_gia, } = body;
-        const duong_dan = `localhost:3000/public/img/${_file.filename}`;
+    postImage(id, file, auth) {
+        const duong_dan = `localhost:3000/public/img/${file.filename}`;
         try {
-            return this.locationService.postImage(id, duong_dan, ten_vi_tri, tinh_thanh, quoc_gia);
+            return this.locationService.postImage(id, duong_dan);
         }
         catch (error) {
-            throw new common_1.HttpException("Lỗi BE", 500);
+            throw new common_1.HttpException('Lỗi BE', 500);
+        }
+    }
+    async getUserSearchPage(auth, pageIndex, pageSize, keyword) {
+        try {
+            return await this.locationService.getLocationSearchPage(pageIndex, pageSize, keyword);
+        }
+        catch (error) {
+            throw new common_1.HttpException('Lỗi BE', 500);
         }
     }
 };
 __decorate([
     (0, swagger_1.ApiBody)({
-        type: Location
+        type: Location,
     }),
     (0, swagger_1.ApiBearerAuth)(),
-    (0, common_1.UseGuards)((0, passport_1.AuthGuard)("jwt")),
+    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt')),
     (0, common_1.Post)('/create-location/'),
     __param(0, (0, common_1.Headers)('authorization')),
     __param(1, (0, common_1.Body)()),
@@ -121,7 +132,7 @@ __decorate([
 ], LocationController.prototype, "createLocation", null);
 __decorate([
     (0, swagger_1.ApiBearerAuth)(),
-    (0, common_1.UseGuards)((0, passport_1.AuthGuard)("jwt")),
+    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt')),
     (0, common_1.Get)(),
     __param(0, (0, common_1.Headers)('authorization')),
     __metadata("design:type", Function),
@@ -130,23 +141,23 @@ __decorate([
 ], LocationController.prototype, "getAllLocation", null);
 __decorate([
     (0, swagger_1.ApiBearerAuth)(),
-    (0, common_1.UseGuards)((0, passport_1.AuthGuard)("jwt")),
+    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt')),
     (0, common_1.Get)(`/get-location-with-id/:id`),
     __param(0, (0, common_1.Headers)('authorization')),
-    __param(1, (0, common_1.Param)("id")),
+    __param(1, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, String]),
     __metadata("design:returntype", Promise)
 ], LocationController.prototype, "getLocationwithId", null);
 __decorate([
     (0, swagger_1.ApiBody)({
-        type: Location
+        type: Location,
     }),
     (0, swagger_1.ApiBearerAuth)(),
-    (0, common_1.UseGuards)((0, passport_1.AuthGuard)("jwt")),
+    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt')),
     (0, common_1.Put)('/update-location/:id'),
     __param(0, (0, common_1.Headers)('authorization')),
-    __param(1, (0, common_1.Param)("id")),
+    __param(1, (0, common_1.Param)('id')),
     __param(2, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, Number, Object]),
@@ -154,33 +165,58 @@ __decorate([
 ], LocationController.prototype, "updateLocation", null);
 __decorate([
     (0, swagger_1.ApiBearerAuth)(),
-    (0, common_1.UseGuards)((0, passport_1.AuthGuard)("jwt")),
-    (0, common_1.Delete)("/delete-location/:id"),
+    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt')),
+    (0, common_1.Delete)('/delete-location/:id'),
     __param(0, (0, common_1.Headers)('authorization')),
-    __param(1, (0, common_1.Param)("id")),
+    __param(1, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, String]),
     __metadata("design:returntype", Promise)
 ], LocationController.prototype, "deleteLocation", null);
 __decorate([
-    (0, swagger_1.ApiConsumes)('mutilpart/from-data'),
+    (0, swagger_1.ApiBearerAuth)(),
+    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt')),
+    (0, common_1.Post)('/upload-image-location/:id'),
+    (0, swagger_1.ApiConsumes)('multipart/form-data'),
     (0, swagger_1.ApiBody)({
-        description: 'fileload',
+        schema: {
+            type: 'object',
+            properties: {
+                fileUpload: {
+                    type: 'string',
+                    format: 'binary',
+                },
+            },
+            required: ['fileUpload'],
+        },
     }),
+    (0, swagger_1.ApiProduces)('application/json'),
+    (0, swagger_1.ApiOkResponse)(),
     (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('fileUpload', {
         storage: (0, multer_1.diskStorage)({
-            destination: process.cwd() + "/public/img",
-            filename: (req, file, callback) => callback(null, Date.now() + "_" + file.originalname)
-        })
+            destination: process.cwd() + '/public/img',
+            filename: (req, file, callback) => callback(null, Date.now() + '_' + file.originalname),
+        }),
     })),
-    (0, common_1.Post)('/post-image-location/:id'),
-    __param(0, (0, common_1.Param)("id")),
+    __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.UploadedFile)()),
-    __param(2, (0, common_1.Body)()),
+    __param(2, (0, common_1.Headers)('authorization')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, Object, Object]),
+    __metadata("design:paramtypes", [String, Object, String]),
     __metadata("design:returntype", void 0)
 ], LocationController.prototype, "postImage", null);
+__decorate([
+    (0, swagger_1.ApiBearerAuth)(),
+    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt')),
+    (0, common_1.Get)('/search-location/'),
+    __param(0, (0, common_1.Headers)('authorization')),
+    __param(1, (0, common_1.Query)('pageIndex')),
+    __param(2, (0, common_1.Query)('pageSize')),
+    __param(3, (0, common_1.Query)('keyword')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Number, Number, String]),
+    __metadata("design:returntype", Promise)
+], LocationController.prototype, "getUserSearchPage", null);
 LocationController = __decorate([
     (0, swagger_1.ApiTags)('Location'),
     (0, common_1.Controller)('location'),

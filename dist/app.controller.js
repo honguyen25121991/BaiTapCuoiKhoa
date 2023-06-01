@@ -19,8 +19,8 @@ let AppController = class AppController {
     }
 };
 AppController = __decorate([
-    (0, swagger_1.ApiTags)("App"),
-    (0, common_1.Controller)("/app"),
+    (0, swagger_1.ApiTags)('App'),
+    (0, common_1.Controller)('/app'),
     __metadata("design:paramtypes", [app_service_1.AppService])
 ], AppController);
 exports.AppController = AppController;

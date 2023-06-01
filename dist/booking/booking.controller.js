@@ -21,37 +21,43 @@ class Booking {
 }
 __decorate([
     (0, swagger_1.ApiProperty)({
-        description: "ma_phong", type: Number
+        description: 'ma_phong',
+        type: Number,
     }),
     __metadata("design:type", Number)
 ], Booking.prototype, "ma_phong", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
-        description: "ngay_den", type: String
+        description: 'ngay_den',
+        type: String,
     }),
     __metadata("design:type", String)
 ], Booking.prototype, "ngay_den", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
-        description: "ngay_di", type: String
+        description: 'ngay_di',
+        type: String,
     }),
     __metadata("design:type", String)
 ], Booking.prototype, "ngay_di", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
-        description: "so_luong_khach", type: Number
+        description: 'so_luong_khach',
+        type: Number,
     }),
     __metadata("design:type", Number)
 ], Booking.prototype, "so_luong_khach", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
-        description: "id_nguoi_dung", type: Number
+        description: 'id_nguoi_dung',
+        type: Number,
     }),
     __metadata("design:type", Number)
 ], Booking.prototype, "id_nguoi_dung", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
-        description: "id_phong", type: Number
+        description: 'id_phong',
+        type: Number,
     }),
     __metadata("design:type", Number)
 ], Booking.prototype, "id_phong", void 0);
@@ -64,7 +70,7 @@ let BookingController = class BookingController {
             return await this.bookingService.createBooking(body);
         }
         catch (error) {
-            throw new common_1.HttpException("Lỗi BE", 500);
+            throw new common_1.HttpException('Lỗi BE', 500);
         }
     }
     async getAllBooking(auth) {
@@ -72,7 +78,7 @@ let BookingController = class BookingController {
             return await this.bookingService.getAllBooking();
         }
         catch (error) {
-            throw new common_1.HttpException("Lỗi BE", 500);
+            throw new common_1.HttpException('Lỗi BE', 500);
         }
     }
     async getBookingWithId(id, auth) {
@@ -80,7 +86,7 @@ let BookingController = class BookingController {
             return await this.bookingService.getBookingWithId(id);
         }
         catch (error) {
-            throw new common_1.HttpException("Lỗi BE", 500);
+            throw new common_1.HttpException('Lỗi BE', 500);
         }
     }
     async getBookingWithIdUser(id, auth) {
@@ -88,22 +94,23 @@ let BookingController = class BookingController {
             return await this.bookingService.getBookingWithIdUser(id);
         }
         catch (error) {
-            throw new common_1.HttpException("Lỗi BE", 500);
+            throw new common_1.HttpException('Lỗi BE', 500);
         }
     }
     async updateComment(id, auth, body) {
-        const { ma_phong, ngay_den, ngay_di, so_luong_khach, id_nguoi_dung, id_phong } = body;
+        const { ma_phong, ngay_den, ngay_di, so_luong_khach, id_nguoi_dung, id_phong, } = body;
         try {
             return await this.bookingService.updateBooking({
                 ma_phong,
                 ngay_den,
                 ngay_di,
                 so_luong_khach,
-                id_nguoi_dung, id_phong
+                id_nguoi_dung,
+                id_phong,
             }, id);
         }
         catch (error) {
-            throw new common_1.HttpException("Lỗi BE", 500);
+            throw new common_1.HttpException('Lỗi BE', 500);
         }
     }
     async deleteBooking(id, auth) {
@@ -111,16 +118,16 @@ let BookingController = class BookingController {
             return await this.bookingService.deleteBooking(id);
         }
         catch (error) {
-            throw new common_1.HttpException("Lỗi BE", 500);
+            throw new common_1.HttpException('Lỗi BE', 500);
         }
     }
 };
 __decorate([
     (0, swagger_1.ApiBody)({
-        type: Booking
+        type: Booking,
     }),
     (0, swagger_1.ApiBearerAuth)(),
-    (0, common_1.UseGuards)((0, passport_1.AuthGuard)("jwt")),
+    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt')),
     (0, common_1.Post)('/create-booking/'),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, common_1.Headers)('authorization')),
@@ -130,7 +137,7 @@ __decorate([
 ], BookingController.prototype, "createBooking", null);
 __decorate([
     (0, swagger_1.ApiBearerAuth)(),
-    (0, common_1.UseGuards)((0, passport_1.AuthGuard)("jwt")),
+    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt')),
     (0, common_1.Get)(),
     __param(0, (0, common_1.Headers)('authorization')),
     __metadata("design:type", Function),
@@ -139,9 +146,9 @@ __decorate([
 ], BookingController.prototype, "getAllBooking", null);
 __decorate([
     (0, swagger_1.ApiBearerAuth)(),
-    (0, common_1.UseGuards)((0, passport_1.AuthGuard)("jwt")),
-    (0, common_1.Get)("/get-booking-with-id/:id"),
-    __param(0, (0, common_1.Param)("id")),
+    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt')),
+    (0, common_1.Get)('/get-booking-with-id/:id'),
+    __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Headers)('authorization')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, String]),
@@ -149,9 +156,9 @@ __decorate([
 ], BookingController.prototype, "getBookingWithId", null);
 __decorate([
     (0, swagger_1.ApiBearerAuth)(),
-    (0, common_1.UseGuards)((0, passport_1.AuthGuard)("jwt")),
-    (0, common_1.Get)("/get-booking-with-user-id/:id"),
-    __param(0, (0, common_1.Param)("id")),
+    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt')),
+    (0, common_1.Get)('/get-booking-with-user-id/:id'),
+    __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Headers)('authorization')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, String]),
@@ -159,12 +166,12 @@ __decorate([
 ], BookingController.prototype, "getBookingWithIdUser", null);
 __decorate([
     (0, swagger_1.ApiBody)({
-        type: Booking
+        type: Booking,
     }),
     (0, swagger_1.ApiBearerAuth)(),
-    (0, common_1.UseGuards)((0, passport_1.AuthGuard)("jwt")),
+    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt')),
     (0, common_1.Put)('/update-booking/:id'),
-    __param(0, (0, common_1.Param)("id")),
+    __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Headers)('authorization')),
     __param(2, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -173,9 +180,9 @@ __decorate([
 ], BookingController.prototype, "updateComment", null);
 __decorate([
     (0, swagger_1.ApiBearerAuth)(),
-    (0, common_1.UseGuards)((0, passport_1.AuthGuard)("jwt")),
-    (0, common_1.Delete)("/delete-booking/:id"),
-    __param(0, (0, common_1.Param)("id")),
+    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt')),
+    (0, common_1.Delete)('/delete-booking/:id'),
+    __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Headers)('authorization')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, String]),

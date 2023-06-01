@@ -16,20 +16,20 @@ let BookingService = class BookingService {
     async createBooking(data) {
         const date = new Date();
         const resuft = await this.prisma.dat_phong.create({
-            data
+            data,
         });
         if (resuft) {
             return {
-                "statusCode": 200,
-                'content': resuft,
-                "dateTime": date
+                statusCode: 200,
+                content: resuft,
+                dateTime: date,
             };
         }
         else {
             return {
-                "statusCode": 404,
-                'content': 'Đặt phòng thất bại',
-                "dateTime": date
+                statusCode: 404,
+                content: 'Đặt phòng thất bại',
+                dateTime: date,
             };
         }
     }
@@ -38,33 +38,35 @@ let BookingService = class BookingService {
         const resuft = await this.prisma.dat_phong.findMany();
         if (resuft.length > 0) {
             return {
-                "statusCode": 200,
-                'content': resuft,
-                "dateTime": date
+                statusCode: 200,
+                content: resuft,
+                dateTime: date,
             };
         }
         else
             return {
-                "statusCode": 404,
-                'content': 'Chưa có booking',
-                "dateTime": date
+                statusCode: 404,
+                content: 'Chưa có booking',
+                dateTime: date,
             };
     }
     async getBookingWithId(id) {
         const date = new Date();
-        const resuft = await this.prisma.dat_phong.findMany({ where: { id_dat_phong: +id } });
+        const resuft = await this.prisma.dat_phong.findMany({
+            where: { id_dat_phong: +id },
+        });
         if (resuft.length > 0) {
             return {
-                "statusCode": 200,
-                'content': resuft,
-                "dateTime": date
+                statusCode: 200,
+                content: resuft,
+                dateTime: date,
             };
         }
         else {
             return {
-                "statusCode": 404,
-                'content': 'Không tìm thấy phòng đã đặt',
-                "dateTime": date
+                statusCode: 404,
+                content: 'Không tìm thấy phòng đã đặt',
+                dateTime: date,
             };
         }
     }
@@ -72,80 +74,87 @@ let BookingService = class BookingService {
         const date = new Date();
         const resuft = await this.prisma.dat_phong.findMany({
             where: {
-                id_nguoi_dung: +id
-            }
+                id_nguoi_dung: +id,
+            },
         });
         if (resuft.length > 0) {
             return {
-                "statusCode": 200,
-                'content': resuft,
-                "dateTime": date
+                statusCode: 200,
+                content: resuft,
+                dateTime: date,
             };
         }
         else {
             return {
-                "statusCode": 404,
-                'content': 'Không tìm thấy phòng đã đặt với mã người dùng bạn cung cấp',
-                "dateTime": date
+                statusCode: 404,
+                content: 'Không tìm thấy phòng đã đặt với mã người dùng bạn cung cấp',
+                dateTime: date,
             };
         }
     }
     async updateBooking(data, id) {
         const date = new Date();
-        const checkId = await this.prisma.dat_phong.findFirst({ where: { id_dat_phong: +id } });
+        const checkId = await this.prisma.dat_phong.findFirst({
+            where: { id_dat_phong: +id },
+        });
         if (checkId == null) {
             return {
-                "statusCode": 404,
-                'content': 'Không tìm thấy id đặt phòng',
-                "dateTime": date
+                statusCode: 404,
+                content: 'Không tìm thấy id đặt phòng',
+                dateTime: date,
             };
         }
         else {
             const resuft = await this.prisma.dat_phong.update({
-                data, where: ({
-                    id_dat_phong: +id
-                })
+                data,
+                where: {
+                    id_dat_phong: +id,
+                },
             });
             if (resuft) {
                 return {
-                    "statusCode": 200,
-                    'content': resuft,
-                    "dateTime": date
+                    statusCode: 200,
+                    content: resuft,
+                    dateTime: date,
                 };
             }
             else {
                 return {
-                    "statusCode": 404,
-                    'content': 'Cập nhật đặt phòng thất bại',
-                    "dateTime": date
+                    statusCode: 404,
+                    content: 'Cập nhật đặt phòng thất bại',
+                    dateTime: date,
                 };
             }
         }
     }
     async deleteBooking(id) {
         const date = new Date();
-        const checkId = await this.prisma.dat_phong.findFirst({ where: { id_dat_phong: +id } });
+        const checkId = await this.prisma.dat_phong.findFirst({
+            where: { id_dat_phong: +id },
+        });
         if (checkId === null) {
             return {
-                "statusCode": 404,
-                'content': 'Không tìm thấy id đặt phòng',
-                "dateTime": date
+                statusCode: 404,
+                content: 'Không tìm thấy id đặt phòng',
+                dateTime: date,
             };
         }
         else {
-            const resuft = await this.prisma.dat_phong.delete({ where: { id_dat_phong: +id } });
+            const resuft = await this.prisma.dat_phong.delete({
+                where: { id_dat_phong: +id },
+            });
             if (resuft) {
                 return {
-                    "statusCode": 200,
-                    'content': 'Xoá đặt phòng thành công',
-                    "dateTime": date
+                    statusCode: 200,
+                    content: 'Xoá đặt phòng thành công',
+                    dateTime: date,
                 };
             }
             else {
                 return {
-                    "statusCode": 404,
-                    'content': 'Xoá đặt phòng thất bại',
-                    "dateTime": date
+                    statusCode: 404,
+                    content: 'Xoá đặt phòng thất bại',
+                    dateTime: date,
                 };
             }
         }

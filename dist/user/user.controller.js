@@ -18,6 +18,8 @@ const user_service_1 = require("./user.service");
 const config_1 = require("@nestjs/config");
 const client_1 = require("@prisma/client");
 const passport_1 = require("@nestjs/passport");
+const platform_express_1 = require("@nestjs/platform-express");
+const multer_1 = require("multer");
 const swagger_1 = require("@nestjs/swagger");
 class User {
 }
@@ -63,6 +65,12 @@ __decorate([
     }),
     __metadata("design:type", String)
 ], User.prototype, "role", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({
+        description: "hinh_anh", type: String
+    }),
+    __metadata("design:type", String)
+], User.prototype, "hinh_anh", void 0);
 let UserController = class UserController {
     constructor(userService, config) {
         this.userService = userService;
@@ -71,10 +79,10 @@ let UserController = class UserController {
     }
     async createUser(body, auth) {
         try {
-            const { email, pass_word, name, phone, birth_day, gender, role } = body;
+            const { email, pass_word, name, phone, birth_day, gender, role, hinh_anh } = body;
             return await this.userService.createUser({
                 email, pass_word, name, phone, birth_day,
-                gender, role
+                gender, role, hinh_anh
             });
         }
         catch (error) {
@@ -120,6 +128,23 @@ let UserController = class UserController {
     async deleteUser(id, auth) {
         try {
             return await this.userService.deleteUser(id);
+        }
+        catch (error) {
+            throw new common_1.HttpException("Lỗi BE", 500);
+        }
+    }
+    postImage(id, file) {
+        const duong_dan = `localhost:3000/public/img/${file.filename}`;
+        try {
+            return this.userService.postImage(id, duong_dan);
+        }
+        catch (error) {
+            throw new common_1.HttpException('Lỗi BE', 500);
+        }
+    }
+    async getUserSearchPage(auth, pageIndex, pageSize, keyword) {
+        try {
+            return await this.userService.getUserSearchPage(pageIndex, pageSize, keyword);
         }
         catch (error) {
             throw new common_1.HttpException("Lỗi BE", 500);
@@ -192,6 +217,50 @@ __decorate([
     __metadata("design:paramtypes", [String, String]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "deleteUser", null);
+__decorate([
+    (0, swagger_1.ApiBearerAuth)(),
+    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt')),
+    (0, common_1.Post)('/upload-image-user/:id'),
+    (0, swagger_1.ApiConsumes)('multipart/form-data'),
+    (0, swagger_1.ApiBody)({
+        schema: {
+            type: 'object',
+            properties: {
+                fileUpload: {
+                    type: 'string',
+                    format: 'binary',
+                },
+            },
+            required: ['fileUpload',],
+        },
+    }),
+    (0, swagger_1.ApiProduces)('application/json'),
+    (0, swagger_1.ApiOkResponse)(),
+    (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('fileUpload', {
+        storage: (0, multer_1.diskStorage)({
+            destination: process.cwd() + '/public/img',
+            filename: (req, file, callback) => callback(null, Date.now() + '_' + file.originalname),
+        }),
+    })),
+    __param(0, (0, common_1.Headers)('authorization')),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.UploadedFile)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", void 0)
+], UserController.prototype, "postImage", null);
+__decorate([
+    (0, swagger_1.ApiBearerAuth)(),
+    (0, common_1.UseGuards)((0, passport_1.AuthGuard)("jwt")),
+    (0, common_1.Get)("/search-user/"),
+    __param(0, (0, common_1.Headers)('authorization')),
+    __param(1, (0, common_1.Query)('pageIndex')),
+    __param(2, (0, common_1.Query)('pageSize')),
+    __param(3, (0, common_1.Query)('keyword')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Number, Number, String]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "getUserSearchPage", null);
 UserController = __decorate([
     (0, swagger_1.ApiTags)("User"),
     (0, common_1.Controller)('user'),

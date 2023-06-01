@@ -12,16 +12,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserService = void 0;
 const common_1 = require("@nestjs/common");
 const client_1 = require("@prisma/client");
-const config_1 = require("@nestjs/config");
-const jwt_1 = require("@nestjs/jwt");
 let UserService = class UserService {
-    constructor(jwtService, config) {
-        this.jwtService = jwtService;
-        this.config = config;
+    constructor() {
         this.prisma = new client_1.PrismaClient();
     }
     async createUser(user) {
-        let { email, name, phone, birth_day, gender, role } = user;
+        let { email, name, phone, birth_day, gender, role, hinh_anh } = user;
         const date = new Date();
         const resuft = await this.prisma.nguoi_dung.findFirst({ where: { email } });
         if (resuft === null) {
@@ -47,7 +43,18 @@ let UserService = class UserService {
     }
     async getAllUser() {
         const date = new Date();
-        const resuft = await this.prisma.nguoi_dung.findMany();
+        const resuft = await this.prisma.nguoi_dung.findMany({
+            select: {
+                id_nguoi_dung: true,
+                name: true,
+                email: true,
+                phone: true,
+                birth_day: true,
+                hinh_anh: true,
+                gender: true,
+                role: true,
+            },
+        });
         if (resuft.length > 0) {
             return {
                 "statusCode": 200,
@@ -67,7 +74,17 @@ let UserService = class UserService {
         const resuft = await this.prisma.nguoi_dung.findMany({
             where: {
                 id_nguoi_dung: +id
-            }
+            },
+            select: {
+                id_nguoi_dung: true,
+                name: true,
+                email: true,
+                phone: true,
+                birth_day: true,
+                hinh_anh: true,
+                gender: true,
+                role: true,
+            },
         });
         if (resuft.length > 0) {
             return {
@@ -89,7 +106,17 @@ let UserService = class UserService {
         const resuft = await this.prisma.nguoi_dung.findMany({
             where: {
                 name: name
-            }
+            },
+            select: {
+                id_nguoi_dung: true,
+                name: true,
+                email: true,
+                phone: true,
+                birth_day: true,
+                hinh_anh: true,
+                gender: true,
+                role: true,
+            },
         });
         if (resuft.length > 0) {
             return {
@@ -166,11 +193,76 @@ let UserService = class UserService {
             }
         }
     }
+    async postImage(id, duong_dan) {
+        const date = new Date();
+        const checkIdUser = await this.prisma.nguoi_dung.findFirst({
+            where: {
+                id_nguoi_dung: +id
+            }
+        });
+        if (checkIdUser !== null) {
+            await this.prisma.nguoi_dung.update({
+                data: {
+                    hinh_anh: duong_dan,
+                }, where: {
+                    id_nguoi_dung: +id,
+                }
+            });
+            return {
+                "statusCode": 200,
+                "message": "Tải ảnh người dùng thành công ",
+                "content": {
+                    hinh_anh: duong_dan,
+                },
+                "dateTime": date
+            };
+        }
+        else {
+            return {
+                "statusCode": 404,
+                "message": " Id người dùng không tồn tại",
+                "dateTime": date
+            };
+        }
+    }
+    async getUserSearchPage(pageIndex, pageSize, keyword) {
+        const date = new Date();
+        const result = await this.prisma.nguoi_dung.findMany({
+            skip: (pageIndex - 1) * pageSize,
+            take: +pageSize,
+            where: {
+                name: {
+                    contains: keyword
+                }
+            }
+        });
+        const totalRow = await this.prisma.nguoi_dung.count({
+            where: {
+                name: {
+                    contains: keyword
+                }
+            }
+        });
+        if (result.length > 0) {
+            return {
+                "statusCode": 200,
+                'content': result,
+                'totalRow': totalRow,
+                "dateTime": date
+            };
+        }
+        else {
+            return {
+                "statusCode": 404,
+                'content': 'Không tìm thấy kết quả',
+                "dateTime": date
+            };
+        }
+    }
 };
 UserService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [jwt_1.JwtService,
-        config_1.ConfigService])
+    __metadata("design:paramtypes", [])
 ], UserService);
 exports.UserService = UserService;
 //# sourceMappingURL=user.service.js.map

@@ -6,7 +6,7 @@ import { PrismaClient, nguoi_dung } from '@prisma/client';
 import { AuthGuard } from '@nestjs/passport';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
-import { ApiBearerAuth, ApiBody, ApiConsumes, ApiProperty, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiOkResponse, ApiProduces, ApiProperty, ApiTags } from '@nestjs/swagger';
 import { Request } from 'express';
 
 class User {
@@ -39,6 +39,10 @@ class User {
         description: "role", type: String
     })
     role: string;
+    @ApiProperty({
+        description: "hinh_anh", type: String
+    })
+    hinh_anh: string;
 }
 @ApiTags("User")
 @Controller('user')
@@ -59,7 +63,7 @@ export class UserController {
     async createUser(
         @Body() body: {
             email: string, pass_word: string, name: string, phone: number,
-            birth_day: string, gender: string, role: string
+            birth_day: string, gender: string, role: string, hinh_anh: string
         },
         @Headers('authorization') auth: string
 
@@ -68,10 +72,10 @@ export class UserController {
     > {
         try {
             const { email, pass_word, name, phone, birth_day,
-                gender, role } = body
+                gender, role, hinh_anh } = body
             return await this.userService.createUser({
                 email, pass_word, name, phone, birth_day,
-                gender, role
+                gender, role, hinh_anh
             })
         } catch (error) {
             throw new HttpException("Lỗi BE", 500)
@@ -159,6 +163,67 @@ export class UserController {
     ): Promise<any> {
         try {
             return await this.userService.deleteUser(id)
+        } catch (error) {
+            throw new HttpException("Lỗi BE", 500)
+        }
+    }
+
+    @ApiBearerAuth()
+    @UseGuards(AuthGuard('jwt'))
+    @Post('/upload-image-user/:id')
+    @ApiConsumes('multipart/form-data')
+    @ApiBody({
+        schema: {
+            type: 'object',
+            properties: {
+                fileUpload: {
+                    type: 'string',
+                    format: 'binary',
+                },
+            },
+            required: ['fileUpload',],
+        },
+    })
+    @ApiProduces('application/json')
+    @ApiOkResponse()
+    @UseInterceptors(
+        FileInterceptor('fileUpload', {
+            storage: diskStorage({
+                destination: process.cwd() + '/public/img',
+                filename: (req, file, callback) =>
+                    callback(null, Date.now() + '_' + file.originalname),
+            }),
+        }),
+    )
+    postImage(
+        @Headers('authorization')
+        @Param('id') id: string,
+        @UploadedFile() file: Express.Multer.File,
+    ) {
+        const duong_dan = `localhost:3000/public/img/${file.filename}`;
+        try {
+            return this.userService.postImage(
+                id,
+                duong_dan,
+            );
+        } catch (error) {
+            throw new HttpException('Lỗi BE', 500);
+        }
+    }
+
+
+    @ApiBearerAuth()
+    @UseGuards(AuthGuard("jwt"))
+    @Get("/search-user/")
+    async getUserSearchPage(
+        @Headers('authorization') auth: string,
+        @Query('pageIndex') pageIndex: number,
+        @Query('pageSize') pageSize: number,
+        @Query('keyword') keyword: string,
+
+    ): Promise<any> {
+        try {
+            return await this.userService.getUserSearchPage(pageIndex, pageSize, keyword)
         } catch (error) {
             throw new HttpException("Lỗi BE", 500)
         }

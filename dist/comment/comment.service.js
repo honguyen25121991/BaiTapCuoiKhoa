@@ -16,38 +16,40 @@ let CommentService = class CommentService {
     async createComment(data) {
         const date = new Date();
         const resuft = await this.prisma.binh_luan.create({
-            data
+            data,
         });
         if (resuft) {
             return {
-                "statusCode": 200,
-                'content': resuft,
-                "dateTime": date
+                statusCode: 200,
+                content: resuft,
+                dateTime: date,
             };
         }
         else {
             return {
-                "statusCode": 404,
-                'content': 'Đăng comment thất bại',
-                "dateTime": date
+                statusCode: 404,
+                content: 'Đăng comment thất bại',
+                dateTime: date,
             };
         }
     }
     async getComment(id) {
         const date = new Date();
-        const resuft = await this.prisma.binh_luan.findMany({ where: { id_binh_luan: +id } });
+        const resuft = await this.prisma.binh_luan.findMany({
+            where: { id_binh_luan: +id },
+        });
         if (resuft.length > 0) {
             return {
-                "statusCode": 200,
-                'content': resuft,
-                "dateTime": date
+                statusCode: 200,
+                content: resuft,
+                dateTime: date,
             };
         }
         else {
             return {
-                "statusCode": 404,
-                'content': 'Không tìm thấy bình luận',
-                "dateTime": date
+                statusCode: 404,
+                content: 'Không tìm thấy bình luận',
+                dateTime: date,
             };
         }
     }
@@ -55,21 +57,21 @@ let CommentService = class CommentService {
         const date = new Date();
         const resuft = await this.prisma.binh_luan.findMany({
             where: {
-                id_phong: +id
-            }
+                id_phong: +id,
+            },
         });
         if (resuft.length > 0) {
             return {
-                "statusCode": 200,
-                'content': resuft,
-                "dateTime": date
+                statusCode: 200,
+                content: resuft,
+                dateTime: date,
             };
         }
         else {
             return {
-                "statusCode": 404,
-                'content': 'Không tìm thấy bình luận',
-                "dateTime": date
+                statusCode: 404,
+                content: 'Không tìm thấy bình luận',
+                dateTime: date,
             };
         }
     }
@@ -78,74 +80,81 @@ let CommentService = class CommentService {
         const resuft = await this.prisma.binh_luan.findMany();
         if (resuft.length > 0) {
             return {
-                "statusCode": 200,
-                'content': resuft,
-                "dateTime": date
+                statusCode: 200,
+                content: resuft,
+                dateTime: date,
             };
         }
         else
             return {
-                "statusCode": 404,
-                'content': 'Chưa có bình luận',
-                "dateTime": date
+                statusCode: 404,
+                content: 'Chưa có bình luận',
+                dateTime: date,
             };
     }
     async updateComment(data, id) {
         const date = new Date();
-        const checkId = await this.prisma.binh_luan.findFirst({ where: { id_binh_luan: +id } });
+        const checkId = await this.prisma.binh_luan.findFirst({
+            where: { id_binh_luan: +id },
+        });
         if (checkId == null) {
             return {
-                "statusCode": 404,
-                'content': 'Không tìm thấy id bình luận',
-                "dateTime": date
+                statusCode: 404,
+                content: 'Không tìm thấy id bình luận',
+                dateTime: date,
             };
         }
         else {
             const resuft = await this.prisma.binh_luan.update({
-                data, where: ({
-                    id_binh_luan: +id
-                })
+                data,
+                where: {
+                    id_binh_luan: +id,
+                },
             });
             if (resuft) {
                 return {
-                    "statusCode": 200,
-                    'content': resuft,
-                    "dateTime": date
+                    statusCode: 200,
+                    content: resuft,
+                    dateTime: date,
                 };
             }
             else {
                 return {
-                    "statusCode": 404,
-                    'content': 'Cập nhật bình luận thất bại',
-                    "dateTime": date
+                    statusCode: 404,
+                    content: 'Cập nhật bình luận thất bại',
+                    dateTime: date,
                 };
             }
         }
     }
     async deleteComment(id) {
         const date = new Date();
-        const checkId = await this.prisma.binh_luan.findFirst({ where: { id_binh_luan: +id } });
+        const checkId = await this.prisma.binh_luan.findFirst({
+            where: { id_binh_luan: +id },
+        });
         if (checkId === null) {
             return {
-                "statusCode": 404,
-                'content': 'Không tìm thấy id bình luận',
-                "dateTime": date
+                statusCode: 404,
+                content: 'Không tìm thấy id bình luận',
+                dateTime: date,
             };
         }
         else {
-            const resuft = await this.prisma.binh_luan.delete({ where: { id_binh_luan: +id } });
+            const resuft = await this.prisma.binh_luan.delete({
+                where: { id_binh_luan: +id },
+            });
             if (resuft) {
                 return {
-                    "statusCode": 200,
-                    'content': 'Xoá comment thành công',
-                    "dateTime": date
+                    statusCode: 200,
+                    content: 'Xoá comment thành công',
+                    dateTime: date,
                 };
             }
             else {
                 return {
-                    "statusCode": 404,
-                    'content': 'Xoá comment thất bại',
-                    "dateTime": date
+                    statusCode: 404,
+                    content: 'Xoá comment thất bại',
+                    dateTime: date,
                 };
             }
         }

@@ -13,5 +13,6 @@ export declare class AuthController {
         birth_day: string;
         gender: string;
         role: string;
+        hinh_anh: string;
     }): Promise<nguoi_dung[]>;
 }

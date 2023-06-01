@@ -1,10 +1,6 @@
 import { PrismaClient } from '@prisma/client';
-import { ConfigService } from '@nestjs/config';
-import { JwtService } from '@nestjs/jwt';
 export declare class UserService {
-    private jwtService;
-    private config;
-    constructor(jwtService: JwtService, config: ConfigService);
+    constructor();
     prisma: PrismaClient<import(".prisma/client").Prisma.PrismaClientOptions, never, import(".prisma/client").Prisma.RejectOnNotFound | import(".prisma/client").Prisma.RejectPerOperation>;
     createUser(user: {
         email: string;
@@ -14,6 +10,7 @@ export declare class UserService {
         birth_day: string;
         gender: string;
         role: string;
+        hinh_anh: string;
     }): Promise<any>;
     getAllUser(): Promise<any>;
     getUserWithId(id: string): Promise<any>;
@@ -28,4 +25,18 @@ export declare class UserService {
         role: string;
     }, id: number): Promise<any>;
     deleteUser(id: string): Promise<any>;
+    postImage(id: string, duong_dan: string): Promise<{
+        statusCode: number;
+        message: string;
+        content: {
+            hinh_anh: string;
+        };
+        dateTime: Date;
+    } | {
+        statusCode: number;
+        message: string;
+        dateTime: Date;
+        content?: undefined;
+    }>;
+    getUserSearchPage(pageIndex: number, pageSize: number, keyword: string): Promise<any>;
 }

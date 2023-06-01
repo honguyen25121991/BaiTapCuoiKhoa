@@ -18,7 +18,7 @@ AuthModule = __decorate([
     (0, common_1.Module)({
         imports: [jwt_1.JwtModule.register({})],
         controllers: [auth_controller_1.AuthController],
-        providers: [auth_service_1.AuthService, jwt_strtegy_1.JwtStrategy]
+        providers: [auth_service_1.AuthService, jwt_strtegy_1.JwtStrategy],
     })
 ], AuthModule);
 exports.AuthModule = AuthModule;
