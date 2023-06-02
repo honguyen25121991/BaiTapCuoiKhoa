@@ -25,8 +25,9 @@ export declare class RoomController {
         id_vi_tri: number;
     }, auth: string): Promise<any>;
     getAllRoom(auth: string): Promise<phong[]>;
-    getRoomById(id: string, auth: string): Promise<phong[]>;
+    getRoomById(id: number, auth: string): Promise<phong[]>;
     getRoomByLocation(id: string, auth: string): Promise<phong[]>;
+    SearchPage(auth: string, pageIndex: number, pageSize: number, keyword: string): Promise<any>;
     updateRoomInfo(id: string, auth: string, body: {
         ten_phong: string;
         khach: number;
@@ -65,5 +66,4 @@ export declare class RoomController {
         dateTime: Date;
         content?: undefined;
     }>;
-    getUserSearchPage(auth: string, pageIndex: number, pageSize: number, keyword: string): Promise<any>;
 }

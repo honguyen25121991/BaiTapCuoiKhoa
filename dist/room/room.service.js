@@ -164,7 +164,7 @@ let RoomService = class RoomService {
         if (checkId == null) {
             return {
                 statusCode: 404,
-                content: 'Không tìm thấy id bình luận',
+                content: 'Không tìm thấy id phòng',
                 dateTime: date,
             };
         }
@@ -185,7 +185,7 @@ let RoomService = class RoomService {
             else {
                 return {
                     statusCode: 404,
-                    content: 'Cập nhật bình luận thất bại',
+                    content: 'Cập nhật phòng thất bại',
                     dateTime: date,
                 };
             }

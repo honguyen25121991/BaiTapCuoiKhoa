@@ -130,6 +130,7 @@ export class RoomService {
     }
   }
 
+
   async getRoomById(id: number): Promise<any> {
     const date = new Date();
     const resuft = await this.prisma.phong.findMany({
@@ -169,6 +170,7 @@ export class RoomService {
       };
     }
   }
+
   async updateRoomInfo(
     id: number,
     data: {
@@ -200,7 +202,7 @@ export class RoomService {
     if (checkId == null) {
       return {
         statusCode: 404,
-        content: 'Không tìm thấy id bình luận',
+        content: 'Không tìm thấy id phòng',
         dateTime: date,
       };
     } else {
@@ -219,7 +221,7 @@ export class RoomService {
       } else {
         return {
           statusCode: 404,
-          content: 'Cập nhật bình luận thất bại',
+          content: 'Cập nhật phòng thất bại',
           dateTime: date,
         };
       }
@@ -256,6 +258,7 @@ export class RoomService {
       }
     }
   }
+
   async postImage(id: string, duong_dan: string) {
     const date = new Date();
     const checkIdUser = await this.prisma.phong.findFirst({

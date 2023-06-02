@@ -138,7 +138,7 @@ class Room {
 @ApiTags('Room')
 @Controller('room')
 export class RoomController {
-  constructor(private readonly roomService: RoomService) {}
+  constructor(private readonly roomService: RoomService) { }
   @ApiBody({
     type: Room,
   })
@@ -178,7 +178,7 @@ export class RoomController {
 
   @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'))
-  @Get()
+  @Get(`/all`)
   async getAllRoom(@Headers('authorization') auth: string): Promise<phong[]> {
     try {
       return await this.roomService.getAllRoom();
@@ -189,13 +189,13 @@ export class RoomController {
 
   @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'))
-  @Get('/:id')
+  @Get('/room-witd-id/:id')
   async getRoomById(
-    @Param('id') id: string,
+    @Param('id') id: number,
     @Headers('authorization') auth: string,
   ): Promise<phong[]> {
     try {
-      return this.roomService.getRoomById(+id);
+      return this.roomService.getRoomById(id);
     } catch (error) {
       throw new HttpException('Lỗi BE', 500);
     }
@@ -203,7 +203,7 @@ export class RoomController {
 
   @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'))
-  @Get('/room/:id')
+  @Get('/room-location/:id')
   async getRoomByLocation(
     @Param('id') id: string,
     @Headers('authorization') auth: string,
@@ -215,6 +215,25 @@ export class RoomController {
     }
   }
 
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard('jwt'))
+  @Get('/search-room/')
+  async SearchPage(
+    @Headers('authorization') auth: string,
+    @Query('pageIndex') pageIndex: number,
+    @Query('pageSize') pageSize: number,
+    @Query('keyword') keyword: string,
+  ): Promise<any> {
+    try {
+      return await this.roomService.getRoomSearchPage(
+        pageIndex,
+        pageSize,
+        keyword,
+      );
+    } catch (error) {
+      throw new HttpException('Lỗi BE', 500);
+    }
+  }
   @ApiBody({
     type: Room,
   })
@@ -303,26 +322,6 @@ export class RoomController {
     const duong_dan = `localhost:3000/public/img/${file.filename}`;
     try {
       return this.roomService.postImage(id, duong_dan);
-    } catch (error) {
-      throw new HttpException('Lỗi BE', 500);
-    }
-  }
-
-  @ApiBearerAuth()
-  @UseGuards(AuthGuard('jwt'))
-  @Get('/search-room/')
-  async getUserSearchPage(
-    @Headers('authorization') auth: string,
-    @Query('pageIndex') pageIndex: number,
-    @Query('pageSize') pageSize: number,
-    @Query('keyword') keyword: string,
-  ): Promise<any> {
-    try {
-      return await this.roomService.getRoomSearchPage(
-        pageIndex,
-        pageSize,
-        keyword,
-      );
     } catch (error) {
       throw new HttpException('Lỗi BE', 500);
     }

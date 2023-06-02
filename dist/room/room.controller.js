@@ -169,7 +169,7 @@ let RoomController = class RoomController {
     }
     async getRoomById(id, auth) {
         try {
-            return this.roomService.getRoomById(+id);
+            return this.roomService.getRoomById(id);
         }
         catch (error) {
             throw new common_1.HttpException('Lỗi BE', 500);
@@ -178,6 +178,14 @@ let RoomController = class RoomController {
     async getRoomByLocation(id, auth) {
         try {
             return this.roomService.getRoomByLocation(+id);
+        }
+        catch (error) {
+            throw new common_1.HttpException('Lỗi BE', 500);
+        }
+    }
+    async SearchPage(auth, pageIndex, pageSize, keyword) {
+        try {
+            return await this.roomService.getRoomSearchPage(pageIndex, pageSize, keyword);
         }
         catch (error) {
             throw new common_1.HttpException('Lỗi BE', 500);
@@ -208,14 +216,6 @@ let RoomController = class RoomController {
             throw new common_1.HttpException('Lỗi BE', 500);
         }
     }
-    async getUserSearchPage(auth, pageIndex, pageSize, keyword) {
-        try {
-            return await this.roomService.getRoomSearchPage(pageIndex, pageSize, keyword);
-        }
-        catch (error) {
-            throw new common_1.HttpException('Lỗi BE', 500);
-        }
-    }
 };
 __decorate([
     (0, swagger_1.ApiBody)({
@@ -233,7 +233,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiBearerAuth)(),
     (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt')),
-    (0, common_1.Get)(),
+    (0, common_1.Get)(`/all`),
     __param(0, (0, common_1.Headers)('authorization')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
@@ -242,23 +242,35 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiBearerAuth)(),
     (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt')),
-    (0, common_1.Get)('/:id'),
+    (0, common_1.Get)('/room-witd-id/:id'),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Headers)('authorization')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, String]),
+    __metadata("design:paramtypes", [Number, String]),
     __metadata("design:returntype", Promise)
 ], RoomController.prototype, "getRoomById", null);
 __decorate([
     (0, swagger_1.ApiBearerAuth)(),
     (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt')),
-    (0, common_1.Get)('/room/:id'),
+    (0, common_1.Get)('/room-location/:id'),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Headers)('authorization')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, String]),
     __metadata("design:returntype", Promise)
 ], RoomController.prototype, "getRoomByLocation", null);
+__decorate([
+    (0, swagger_1.ApiBearerAuth)(),
+    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt')),
+    (0, common_1.Get)('/search-room/'),
+    __param(0, (0, common_1.Headers)('authorization')),
+    __param(1, (0, common_1.Query)('pageIndex')),
+    __param(2, (0, common_1.Query)('pageSize')),
+    __param(3, (0, common_1.Query)('keyword')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Number, Number, String]),
+    __metadata("design:returntype", Promise)
+], RoomController.prototype, "SearchPage", null);
 __decorate([
     (0, swagger_1.ApiBody)({
         type: Room,
@@ -315,18 +327,6 @@ __decorate([
     __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", void 0)
 ], RoomController.prototype, "postImage", null);
-__decorate([
-    (0, swagger_1.ApiBearerAuth)(),
-    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt')),
-    (0, common_1.Get)('/search-room/'),
-    __param(0, (0, common_1.Headers)('authorization')),
-    __param(1, (0, common_1.Query)('pageIndex')),
-    __param(2, (0, common_1.Query)('pageSize')),
-    __param(3, (0, common_1.Query)('keyword')),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, Number, Number, String]),
-    __metadata("design:returntype", Promise)
-], RoomController.prototype, "getUserSearchPage", null);
 RoomController = __decorate([
     (0, swagger_1.ApiTags)('Room'),
     (0, common_1.Controller)('room'),
