@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
 
 @Injectable()
@@ -22,48 +22,28 @@ export class KhuyenMaiService {
   }
 
   async updateKhuyenMai(id: number, ma_khuyen_mai: string, ten_san_pham: string) {
-    const checkId = await this.prisma.khuyen_mai.findFirst({ where: { Id: +id } })
-    if (!checkId) {
-      throw new NotFoundException(`Khuyen Mai with ID ${id} not found`);
-    } else {
-      const result = await this.prisma.khuyen_mai.update({
-        where: { Id: id },
-        data: { ma_khuyen_mai, ten_san_pham },
-      });
-      if (result) {
-        return {
-          "statusCode": 200,
-          'content': 'Cập nhật khuyến mãi thành công',
-          data: result
-        }
-      } else {
-        return {
-          "statusCode": 404,
-          'content': 'Cập nhật khuyến mãi thất bại',
-        }
-      }
+    const khuyenMai = await this.prisma.khuyen_mai.findUnique({
+      where: { Id: +id },
+    });
+    const existingKhuyenMai = await this.prisma.khuyen_mai.findFirst({
+      where: { ma_khuyen_mai },
+    });
+    if (!khuyenMai) {
+      throw new NotFoundException();
     }
+    if (existingKhuyenMai && existingKhuyenMai.Id !== id) {
+      throw new ConflictException();
+    }
+
+    return this.prisma.khuyen_mai.update({
+      where: { Id: +id },
+      data: { ma_khuyen_mai, ten_san_pham },
+    });
   }
 
   async deleteKhuyenMai(id: number) {
-    const checkId = await this.prisma.khuyen_mai.findFirst({ where: { Id: +id } })
-    if (!checkId) {
-      throw new NotFoundException(`Khuyen Mai with ID ${id} not found`);
-    } else {
-      const result = await this.prisma.khuyen_mai.delete({
-        where: { Id: id },
-      });
-      if (result) {
-        return {
-          "statusCode": 200,
-          'content': 'Xoá khuyến mãi thành công',
-        }
-      } else {
-        return {
-          "statusCode": 404,
-          'content': 'Xoá khuyến mãi thất bại',
-        }
-      }
-    }
+    return this.prisma.khuyen_mai.delete({
+      where: { Id: id },
+    });
   }
 }
