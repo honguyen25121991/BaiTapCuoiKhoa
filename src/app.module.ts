@@ -8,6 +8,7 @@ import { CommentModule } from './comment/comment.module';
 import { RoomModule } from './room/room.module';
 import { LocationModule } from './location/location.module';
 import { BookingModule } from './booking/booking.module';
+import { KhuyenMaiModule } from './khuyenmai/khuyenmai.module';
 
 
 @Module({
@@ -17,8 +18,9 @@ import { BookingModule } from './booking/booking.module';
     RoomModule,
     LocationModule,
     BookingModule,
+    KhuyenMaiModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [AppController ],
+  providers: [AppService ],
 })
 export class AppModule { }

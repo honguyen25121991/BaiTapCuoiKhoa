@@ -83,3 +83,8 @@ model vi_tri {
   hinh_anh                      String  @db.VarChar(255)
   phong_phong_id_vi_triTovi_tri phong[] @relation("phong_id_vi_triTovi_tri")
 }
+model khuyen_mai {
+  Id           Int    @id @default(autoincrement())
+  ma_khuyen_mai String 
+  ten_san_pham String
+}
