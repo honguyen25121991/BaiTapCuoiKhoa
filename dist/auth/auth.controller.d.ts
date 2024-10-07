@@ -1,3 +1,4 @@
+/// <reference types="multer" />
 import { AuthService } from './auth.service';
 import { nguoi_dung } from '@prisma/client';
 import { userLogin } from './dto/create-auth.dto';
@@ -13,6 +14,5 @@ export declare class AuthController {
         birth_day: string;
         gender: string;
         role: string;
-        hinh_anh: string;
-    }): Promise<nguoi_dung[]>;
+    }, file: Express.Multer.File): Promise<nguoi_dung[]>;
 }

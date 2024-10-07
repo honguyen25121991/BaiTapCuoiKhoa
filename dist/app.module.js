@@ -17,6 +17,7 @@ const comment_module_1 = require("./comment/comment.module");
 const room_module_1 = require("./room/room.module");
 const location_module_1 = require("./location/location.module");
 const booking_module_1 = require("./booking/booking.module");
+const khuyenmai_module_1 = require("./khuyenmai/khuyenmai.module");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
@@ -27,6 +28,7 @@ AppModule = __decorate([
             room_module_1.RoomModule,
             location_module_1.LocationModule,
             booking_module_1.BookingModule,
+            khuyenmai_module_1.KhuyenMaiModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],

@@ -8,11 +8,16 @@ import {
   Delete,
   HttpException,
   HttpCode,
+  UseInterceptors,
+  UploadedFile,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { nguoi_dung } from '@prisma/client';
 import { userLogin } from './dto/create-auth.dto';
-import { ApiBearerAuth, ApiBody, ApiProperty, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiProperty, ApiTags } from '@nestjs/swagger';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
+import { extname } from 'path';
 class Auth {
   @ApiProperty({
     description: 'email',
@@ -27,45 +32,28 @@ class Auth {
   pass_word: string;
 }
 class AuthLogin {
-  @ApiProperty({
-    description: 'email',
-    type: String,
-  })
+  @ApiProperty({ description: 'Email of the user' })
   email: string;
-  @ApiProperty({
-    description: 'pass_word',
-    type: String,
-  })
+
+  @ApiProperty({ description: 'Password of the user' })
   pass_word: string;
-  @ApiProperty({
-    description: 'name',
-    type: String,
-  })
+
+  @ApiProperty({ description: 'Name of the user' })
   name: string;
-  @ApiProperty({
-    description: 'phone',
-    type: Number,
-  })
+
+  @ApiProperty({ description: 'Phone number of the user' })
   phone: number;
-  @ApiProperty({
-    description: 'birth_day',
-    type: String,
-  })
+
+  @ApiProperty({ description: 'Birth date of the user' })
   birth_day: string;
-  @ApiProperty({
-    description: 'gender',
-    type: String,
-  })
+
+  @ApiProperty({ description: 'Gender of the user' })
   gender: string;
-  @ApiProperty({
-    description: 'role',
-    type: String,
-  })
+
+  @ApiProperty({ description: 'Role of the user' })
   role: string;
-  @ApiProperty({
-    description: 'hinh_anh',
-    type: String,
-  })
+
+  @ApiProperty({ type: 'string', format: 'binary', description: 'Profile picture of the user' })
   hinh_anh: string;
 }
 @ApiTags('Auth')
@@ -86,13 +74,24 @@ export class AuthController {
     }
   }
 
+  @ApiConsumes('multipart/form-data')
   @ApiBody({
     type: AuthLogin,
   })
+  @UseInterceptors(
+    FileInterceptor('hinh_anh', {
+      storage: diskStorage({
+        destination: './public/img',
+        filename: (req, file, cb) => {
+          const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+          cb(null, `${file.fieldname}-${uniqueSuffix}${extname(file.originalname)}`);
+        },
+      }),
+    }),
+  )
   @Post('/signing')
   async createUser(
-    @Body()
-    body: {
+    @Body() body: {
       email: string;
       pass_word: string;
       name: string;
@@ -100,8 +99,8 @@ export class AuthController {
       birth_day: string;
       gender: string;
       role: string;
-      hinh_anh: string;
     },
+    @UploadedFile() file: Express.Multer.File,
   ): Promise<nguoi_dung[]> {
     try {
       const {
@@ -112,8 +111,9 @@ export class AuthController {
         birth_day,
         gender,
         role,
-        hinh_anh,
       } = body;
+      const hinh_anh = file ? `http://localhost:3000/public/img/${file.filename}` : null;
+
       return await this.authService.createUser({
         email,
         pass_word,
@@ -125,6 +125,7 @@ export class AuthController {
         hinh_anh,
       });
     } catch (error) {
+      console.log('error', error);
       throw new HttpException('Lỗi BE', 500);
     }
   }

@@ -51,20 +51,25 @@ export class AuthService {
   }): Promise<any> {
     const { email, name, phone, birth_day, gender, role, hinh_anh } = user;
     const date = new Date();
-
+ // Parse phone as an integer
+ const parsedPhone = parseInt(phone.toString(), 10);
     const resuft = await this.prisma.nguoi_dung.findFirst({ where: { email } });
     if (resuft === null) {
-      await this.prisma.nguoi_dung.create({ data: user });
+      await this.prisma.nguoi_dung.create({ data: {
+        ...user,
+        phone: parsedPhone, // Use the parsed phone number
+      }, });
       return {
         statusCode: 200,
         message: 'Tạo người dùng thành công',
         content: {
           email,
           name,
-          phone,
+          phone:parsedPhone,
           birth_day,
           gender,
           role,
+          hinh_anh,
         },
         dateTime: date,
       };

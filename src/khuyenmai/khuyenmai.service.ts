@@ -15,13 +15,13 @@ export class KhuyenMaiService {
     });
   }
 
-  async createKhuyenMai(ma_khuyen_mai: string, ten_san_pham: string) {
+  async createKhuyenMai(ma_khuyen_mai: string, ten_san_pham: string, hinh_anh: string) {
     return this.prisma.khuyen_mai.create({
-      data: { ma_khuyen_mai, ten_san_pham },
+      data: { ma_khuyen_mai, ten_san_pham , hinh_anh},
     });
   }
 
-  async updateKhuyenMai(id: number, ma_khuyen_mai: string, ten_san_pham: string) {
+  async updateKhuyenMai(id: number, ma_khuyen_mai: string, ten_san_pham: string, hinh_anh: string) {
     const khuyenMai = await this.prisma.khuyen_mai.findUnique({
       where: { Id: +id },
     });

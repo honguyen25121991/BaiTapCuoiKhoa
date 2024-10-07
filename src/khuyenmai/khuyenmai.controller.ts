@@ -15,6 +15,12 @@ class khuyenmai {
         
     })
     ten_san_pham: string;
+    @ApiProperty({
+      description: "hinh_anh", type: String
+      
+  })
+  hinh_anh: string;
+
 }
 
   
@@ -41,8 +47,8 @@ export class KhuyenMaiController {
   @ApiBody({
     type: khuyenmai
 })
-  async createKhuyenMai(@Body() body :{ma_khuyen_mai: string , ten_san_pham: string}) {
-    const data = await this.khuyenMaiService.createKhuyenMai(body.ma_khuyen_mai, body.ten_san_pham);
+  async createKhuyenMai(@Body() body :{ma_khuyen_mai: string , ten_san_pham: string, hinh_anh: string}) {
+    const data = await this.khuyenMaiService.createKhuyenMai(body.ma_khuyen_mai, body.ten_san_pham, body.hinh_anh);
     return this.responseService.success(200, 'Success', data);
   }
 
@@ -50,9 +56,9 @@ export class KhuyenMaiController {
   @ApiBody({
     type: khuyenmai
 })
-async updateKhuyenMai(@Param('id') id: number, @Body() body :{ma_khuyen_mai: string , ten_san_pham: string}) {
+async updateKhuyenMai(@Param('id') id: number, @Body() body :{ma_khuyen_mai: string , ten_san_pham: string, hinh_anh: string}) {
   try {
-    const data = await this.khuyenMaiService.updateKhuyenMai(id, body.ma_khuyen_mai, body.ten_san_pham);
+    const data = await this.khuyenMaiService.updateKhuyenMai(id, body.ma_khuyen_mai, body.ten_san_pham, body.hinh_anh);
     return this.responseService.success(200, 'Khuyen Mai updated successfully', data);
   } catch (error) {
     if (error instanceof NotFoundException) {

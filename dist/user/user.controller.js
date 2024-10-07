@@ -21,6 +21,8 @@ const passport_1 = require("@nestjs/passport");
 const platform_express_1 = require("@nestjs/platform-express");
 const multer_1 = require("multer");
 const swagger_1 = require("@nestjs/swagger");
+const path_1 = require("path");
+const fs = require("fs");
 class User {
 }
 __decorate([
@@ -133,10 +135,20 @@ let UserController = class UserController {
             throw new common_1.HttpException("Lỗi BE", 500);
         }
     }
-    postImage(id, file) {
-        const duong_dan = `localhost:3000/public/img/${file.filename}`;
+    async postImage(id, file) {
+        const duong_dan = `http://localhost:3000/public/img/${file.filename}`;
         try {
-            return this.userService.postImage(id, duong_dan);
+            const user = await this.userService.getUserWithId(id);
+            console.log('user', user);
+            const oldImagePath = user.content[0].hinh_anh;
+            console.log('oldImagePath', oldImagePath);
+            if (oldImagePath) {
+                const oldImageFullPath = path_1.default.join(process.cwd(), 'public', 'img', path_1.default.basename(oldImagePath));
+                if (fs.existsSync(oldImageFullPath)) {
+                    fs.unlinkSync(oldImageFullPath);
+                }
+            }
+            return await this.userService.postImage(id, duong_dan);
         }
         catch (error) {
             throw new common_1.HttpException('Lỗi BE', 500);
@@ -247,7 +259,7 @@ __decorate([
     __param(1, (0, common_1.UploadedFile)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, Object]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Promise)
 ], UserController.prototype, "postImage", null);
 __decorate([
     (0, swagger_1.ApiBearerAuth)(),

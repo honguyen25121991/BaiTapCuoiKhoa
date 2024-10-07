@@ -87,4 +87,5 @@ model khuyen_mai {
   Id           Int    @id @default(autoincrement())
   ma_khuyen_mai String 
   ten_san_pham String
+  hinh_anh      String      @db.VarChar(255)
 }

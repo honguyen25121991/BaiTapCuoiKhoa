@@ -48,19 +48,21 @@ let AuthService = class AuthService {
     async createUser(user) {
         const { email, name, phone, birth_day, gender, role, hinh_anh } = user;
         const date = new Date();
+        const parsedPhone = parseInt(phone.toString(), 10);
         const resuft = await this.prisma.nguoi_dung.findFirst({ where: { email } });
         if (resuft === null) {
-            await this.prisma.nguoi_dung.create({ data: user });
+            await this.prisma.nguoi_dung.create({ data: Object.assign(Object.assign({}, user), { phone: parsedPhone }), });
             return {
                 statusCode: 200,
                 message: 'Tạo người dùng thành công',
                 content: {
                     email,
                     name,
-                    phone,
+                    phone: parsedPhone,
                     birth_day,
                     gender,
                     role,
+                    hinh_anh,
                 },
                 dateTime: date,
             };
