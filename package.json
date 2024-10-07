@@ -28,7 +28,7 @@
     "@nestjs/passport": "^9.0.3",
     "@nestjs/platform-express": "^9.0.0",
     "@nestjs/swagger": "^6.3.0",
-    "@prisma/client": "^4.13.0",
+    "@prisma/client": "4.13.0",
     "@types/passport-jwt": "^3.0.8",
     "passport": "^0.6.0",
     "passport-jwt": "^4.0.1",
@@ -79,5 +79,6 @@
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
   },
-  "main": "index.js"
+  "main": "index.js",
+  "packageManager": "yarn@4.5.0"
 }
