@@ -1,6 +1,5 @@
 import { Body, Controller, Delete, ForbiddenException, Get, Headers, HttpCode, HttpException, HttpStatus, InternalServerErrorException, Param, Post, Put, Query, Req, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { UserService } from './user.service';
-import { UserDto, userLogin, } from './dto/user.dto';
 import { ConfigService } from '@nestjs/config';
 import { PrismaClient, nguoi_dung } from '@prisma/client';
 import { AuthGuard } from '@nestjs/passport';
@@ -8,7 +7,8 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiOkResponse, ApiProduces, ApiProperty, ApiTags } from '@nestjs/swagger';
 import { Request } from 'express';
-
+import path from 'path';
+import * as fs from 'fs';
 class User {
 
     @ApiProperty({
@@ -195,20 +195,32 @@ export class UserController {
             }),
         }),
     )
-    postImage(
+    async postImage(
         @Headers('authorization')
         @Param('id') id: string,
         @UploadedFile() file: Express.Multer.File,
     ) {
-        const duong_dan = `localhost:3000/public/img/${file.filename}`;
-        try {
-            return this.userService.postImage(
-                id,
-                duong_dan,
-            );
-        } catch (error) {
-            throw new HttpException('Lỗi BE', 500);
+        const duong_dan = `http://localhost:3000/public/img/${file.filename}`;
+    try {
+      // Lấy đường dẫn ảnh cũ từ cơ sở dữ liệu
+      const user = await this.userService.getUserWithId(id);
+      console.log('user', user);
+      const oldImagePath = user.content[0].hinh_anh;
+
+      // Xóa ảnh cũ nếu tồn tại
+      console.log('oldImagePath', oldImagePath);
+      if (oldImagePath) {
+        const oldImageFullPath = path.join(process.cwd(), 'public', 'img', path.basename(oldImagePath));
+        if (fs.existsSync(oldImageFullPath)) {
+          fs.unlinkSync(oldImageFullPath);
         }
+      }
+
+      // Cập nhật đường dẫn ảnh mới trong cơ sở dữ liệu
+      return await this.userService.postImage(id, duong_dan);
+    } catch (error) {
+      throw new HttpException('Lỗi BE', 500);
+    }
     }
 
 
